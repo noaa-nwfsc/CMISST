@@ -1,25 +1,28 @@
-# This application requires several datasets
+# This application (CMISST) requires several datasets
 #  This code creates those datasets and saves them as RData files
-#  that can be loaded by the app
-#  But it is not part of the app
+#  This only has to be run to update the data, not each time you want to use the code
 
 library(reshape2)
 library(sf)
 library(ncdf4)
 
-source('scripts/get_index.R') # This is not the same script as the app version
-source('scripts/dam_counts/run_fetch_FPC_counts_single_species.R')
+source('R/get_index.R') # This is not the same script as the app version
+#source('scripts/dam_counts/run_fetch_FPC_counts_single_species.R')
 
+#********************************************************
 # get the land for plotting (wrap across antimeridian)
+#********************************************************
 land<-rnaturalearth::ne_countries(type='countries', scale = "large", returnclass = "sf")
 amer <- land[land$region_un=='Americas',]
 # shift the Americas to a more Pacific centric worldview
-pacified_amer <- st_shift_longitude(amer)
+pacified_amer <- sf::st_shift_longitude(amer)
 rest_of_world <- land[!land$region_un=='Americas',]
 land <- rbind(pacified_amer, rest_of_world)
-save("land", file = "CMISSTapp/data/land.Rdata")
+save("land", file = "data/land.Rdata")
 
-# THIS WAS TO CREATE THE GLOBAL SST DATA (RDATA FILE) FOR SHINY
+#********************************************************
+# THIS IS TO CREATE THE GLOBAL SST DATA (RDATA FILE)
+#********************************************************
 dataSet='ERSST'
 # Full globe
 min.lon=0
@@ -32,14 +35,15 @@ removeBering=FALSE
 returnDataType='anom'
 returnObjectType='array'
 
+# Function defined in create_OceanData_Object.R
 oceanData_ERSST<-getOceanData(dataSet=dataSet,
                         returnDataType=returnDataType, returnObjectType=returnObjectType,
                         min.lon=min.lon, max.lon=max.lon,
                         min.lat=min.lat, max.lat=max.lat,
                         years = years, months = months,
                         removeBering = removeBering)
-save(x = "oceanData_ERSST", file = 'CMISSTapp/data/oceanSSTData.RData')
-load('CMISSTapp/data/oceanSSTData.RData')
+save(x = "oceanData_ERSST", file = 'data/oceanSSTData.RData')
+load('data/oceanSSTData.RData')
 
 # SSH
 dataSet='SSH'
@@ -62,8 +66,8 @@ oceanData_SSH<-getOceanData(dataSet=dataSet,
                         min.lat=min.lat, max.lat=max.lat,
                         years = years, months = months,
                         removeBering = removeBering)
-save(x = "oceanData_SSH", file = 'CMISSTapp/data/oceanSSHData.RData')
-load('CMISSTapp/data/oceanSSHData.RData')
+save(x = "oceanData_SSH", file = 'data/oceanSSHData.RData')
+load('data/oceanSSHData.RData')
 
 
 #  Code to extract dam counts and save to a file
