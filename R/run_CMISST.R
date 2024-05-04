@@ -4,8 +4,6 @@
 #    brian.burke@noaa.gov
 #
 
-library(sf)
-
 library(reshape2)
 library(ggplot2)
 library(RColorBrewer)
@@ -32,16 +30,6 @@ months=seq(1,12,1)
 removeBering=FALSE
 returnDataType='anom'
 returnObjectType='array'
-
-#************************************
-#  For Leave One Out Cross-validation
-#************************************
-
-# The script will leave only the most recent years out,
-#   emulating a forecasting scenario.  How many years should be included?
-#   E.g., 5 will only test the 5 most recent years, and using teh full
-#   time series length will remove every data point (one at a time)
-loocvYears=5 # the most recent X years to include in the LOO CV
 
 
 #************************************
@@ -70,20 +58,27 @@ input.long= c(158, 246)
 #  For salmon, this would be the year of ocean entry
 input.years= c(1980, 2023)
 
-# Prediction years
+# Prediction years (ocean years)
 #  These years will not be included in calculating the CMISST index,
 #  but will be in the index output for use in a predictive model
-#input.years.pred=c(2021,2022)
+#input.years.pred=c(2022,2023)
 input.years.pred=NA
 
-# Input: MAE LOO CV? ----
-#input.loocv= FALSE
-input.loocv= TRUE
-# Do we want each individual year's prediction output (TRUE), or a mean and se per year (FALSE)
-pred_out=TRUE
+#************************************
+#  For Leave One Out Cross-validation
+#************************************
 
-# Input: What map to plot
-input.season = "spr"
+# The script will leave only the most recent years out,
+#   emulating a forecasting scenario.  How many years should be included?
+#   E.g., 5 will only test the 5 most recent years, and using teh full
+#   time series length will remove every data point (one at a time)
+loocvYears=5 # the most recent X years to include in the LOO CV
+
+# Input: MAE LOO CV? ----
+input.loocv= TRUE
+# Do we want each individual year's prediction output (TRUE),
+#   or a mean and se per year (FALSE)
+pred_out = TRUE
 
 
 #************************************
@@ -112,7 +107,7 @@ updateCMISST <- function() {
 
   # Calculate the CMISST index
   cmisst <- get_CMISST_index(response = response.tmp[,c("year","val.scl")],
-                             oceanData = oceanData_ERSST, years.pred = input.years.pred,
+                             oceanData = oceanData, years.pred = input.years.pred,
                              min.lon = min.lon, max.lon = max.lon,
                              min.lat = min.lat, max.lat = max.lat,
                              years = years, months = months,
@@ -143,6 +138,10 @@ cmisst <- updateCMISST()
 #************************************
 # Things below here should be moved to a new script for plotting
 #************************************
+
+
+# Input: What map to plot
+input.season = "spr"
 
 
 
