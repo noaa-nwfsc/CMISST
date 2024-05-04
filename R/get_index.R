@@ -26,14 +26,6 @@ get_CMISST_index <- function(response, oceanData=oceanData_ERSST,
   # Extract and scale the spatial data
   #***************************************************************
   
-  #  The original script loaded individual .nc files as needed
-  #  The revised version, for shiny, loads a saved version of the 
-  #    full globe and subsets it.
-  #  Data that needs to be loaded is in createStoredObjects.R
-
-  # if (dataSet == "ERSST") oceanData <- oceanData_ERSST
-  # if (dataSet == "SSH") oceanData <- oceanData_SSH
-
   # Index the locations in the file
   lons <- as.numeric(dimnames(oceanData)[[1]])
   lats <- as.numeric(dimnames(oceanData)[[2]])
@@ -41,10 +33,10 @@ get_CMISST_index <- function(response, oceanData=oceanData_ERSST,
   lon.index<-which(lons >= min.lon & lons <= max.lon) 
     lat.index<-which(lats >= min.lat & lats <= max.lat)
   yr_mo.index<-which(yr_mo %in% year_mo$label)
+  # Subset the ocean data with user-defined extent
   oceanData <- oceanData[lon.index, lat.index, yr_mo.index]
-
   
-  
+  # Create the function to calculate seasonal averages
   createSeasonalData<-function(oceanData,
                                years = years, months = months, year_mo=year_mo, season=1) {
     seasonal<-array(NA, c(dim(oceanData)[1], dim(oceanData)[2], length(years)), dimnames = list(dimnames(oceanData)[[1]], dimnames(oceanData)[[2]], years))
@@ -75,8 +67,6 @@ get_CMISST_index <- function(response, oceanData=oceanData_ERSST,
 
   #********************************************************************
   # Create the index (how similar is each year to the covariance map)
-  # For the PDO, I think they regress each year onto the pdo pattern
-  # But are there other methods of comparing similarity of matrices that we should think about?
   #********************************************************************
   coefs_cov<-NULL
   options(na.action="na.omit")
@@ -87,9 +77,15 @@ get_CMISST_index <- function(response, oceanData=oceanData_ERSST,
                                   lm(as.vector(oceanData.s4.scl[,,tt]) ~ -1 + as.vector(covs4))$coef))
   coefs_cov<-data.frame(coefs_cov)
   coefs_cov$year<-years
-  #index_cov<-cbind(coefs_cov,response$val)
   index_cov<-merge(coefs_cov, response[response$year %in% years.fit,], all.x=TRUE)
   colnames(index_cov)<-c("year","win.cov","spr.cov","sum.cov","aut.cov","val")
 
+  # Returns index as a list
+  #  cmisst[[1]] contains 6 columns (as one list item): 4 seasonal indices, year, response
+  #  cmisst[[2]] winter spatial covariance values (for maps)
+  #  cmisst[[3]] spring spatial covariance values (for maps)
+  #  cmisst[[4]] summer spatial covariance values (for maps)
+  #  cmisst[[5]] autumn spatial covariance values (for maps)
+  #  cmisst[[6]] lat, long min and max, 1 list item
   return(list(index_cov, covs1, covs2, covs3, covs4, c(min.lat, max.lat, min.lon, max.lon)))
 }

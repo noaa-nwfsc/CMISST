@@ -1,6 +1,16 @@
 # Extract data from global data sets
 # User sets extent and return object type
 
+
+#*****************************************
+#*****************************************
+# Not needed by most users. The resulting data
+#  have been stored in RData files, which will
+#  be updated annually by Brian Burke
+#*****************************************
+#*****************************************
+
+
 # SST data are from ERSST (https://www.ncei.noaa.gov/pub/data/cmb/ersst/v5/netcdf/)
 # ERSST is a 2x2 degree gloabal dataset
 
