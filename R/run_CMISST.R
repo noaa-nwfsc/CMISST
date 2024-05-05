@@ -56,13 +56,14 @@ input.long= c(158, 246)
 
 # Input: Ocean Years ----
 #  For salmon, this would be the year of ocean entry
+#  Years after the most recent year in the response will be predicted
 input.years= c(1980, 2023)
 
 # Prediction years (ocean years)
 #  These years will not be included in calculating the CMISST index,
 #  but will be in the index output for use in a predictive model
-input.years.pred=c(2020)
-#input.years.pred=NA
+#input.years.pred=c(2020)
+input.years.pred=NA
 
 #************************************
 #  For Leave One Out Cross-validation
@@ -131,7 +132,8 @@ updateCMISST <- function() {
     return(append(cmisst, loocv))
   } else return(cmisst)
   # Returns index as a list
-  #  cmisst[[1]] contains 6 columns (as one list item): 4 seasonal indices, year, response
+  #  cmisst[[1]] contains 7 columns (as one list item): year, 4 seasonal indices,
+  #              the scaled response, and the original response
   #  cmisst[[2]] winter spatial covariance values (for maps)
   #  cmisst[[3]] spring spatial covariance values (for maps)
   #  cmisst[[4]] summer spatial covariance values (for maps)

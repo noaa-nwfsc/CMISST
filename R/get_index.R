@@ -4,7 +4,7 @@
 #source("create_OceanData_Object.R")
 
 get_CMISST_index <- function(response, oceanData=oceanData_ERSST,
-                             years=NA, years.fit=year.fit,
+                             years=NA, years.fit=years.fit,
                              months=1:12, years.pred=NA,
                              min.lon=158, max.lon=246,
                              min.lat=10, max.lat=62,
