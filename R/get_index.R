@@ -4,7 +4,8 @@
 #source("create_OceanData_Object.R")
 
 get_CMISST_index <- function(response, oceanData=oceanData_ERSST,
-                             years=NA, months=1:12, years.pred=NA,
+                             years=NA, years.fit=year.fit,
+                             months=1:12, years.pred=NA,
                              min.lon=158, max.lon=246,
                              min.lat=10, max.lat=62,
                              returnDataType='anom',
@@ -14,10 +15,6 @@ get_CMISST_index <- function(response, oceanData=oceanData_ERSST,
   if (ncol(response)!=2) { print("incorrect data - requires a 2-column data frame with year and the response"); return(NA) }
   colnames(response)<-c("year","val")
   
-  if (is.na(years)[1]) years=response$year
-  if (!is.na(years.pred[1])) {
-    years.fit<-years[!years %in% years.pred] # will be needed to calculate the covariance
-  } else years.fit <- years
   # 'years' will be considered 'all years'  If we need fit or pred, we can access them
   year_mo<-data.frame(year=rep(years, each=length(months)), month=rep(months, length(years)),
                       label=paste(rep(years, each=length(months)), rep(months, length(years)), sep = "_"))
@@ -31,7 +28,7 @@ get_CMISST_index <- function(response, oceanData=oceanData_ERSST,
   lats <- as.numeric(dimnames(oceanData)[[2]])
   yr_mo <- dimnames(oceanData)[[3]]
   lon.index<-which(lons >= min.lon & lons <= max.lon) 
-    lat.index<-which(lats >= min.lat & lats <= max.lat)
+  lat.index<-which(lats >= min.lat & lats <= max.lat)
   yr_mo.index<-which(yr_mo %in% year_mo$label)
   # Subset the ocean data with user-defined extent
   oceanData <- oceanData[lon.index, lat.index, yr_mo.index]

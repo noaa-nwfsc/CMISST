@@ -1,25 +1,14 @@
 # Run LOO cross-validation, removing each year sequentially and predicting that year
 
-# library(ncdf4)
-# library(RColorBrewer)
-# library(sp)
-# library(maptools)
-# library(reshape2)
-# library(ggplot2)
-# library(sdmTMB)
-# library(ggeffects)
-# library(visreg)
-# library(doBy)
-
-
 #*************************************************************
 #  Create a large loop right here for cross-validation
+#   The only years that should be sent here are the fit years
 #*************************************************************
 LOO_CV <- function(response = response,
                    oceanData = oceanData, loocvYears = 5,
                    min.lon = min.lon, max.lon = max.lon,
                    min.lat = min.lat, max.lat = max.lat,
-                   years = years, months = months,
+                   years = years.fit, months = months,
                    includePDO = FALSE, includePC1 = FALSE) {
 
   # Verify that the response is what we expect
@@ -75,10 +64,10 @@ LOO_CV <- function(response = response,
     oceanData.s4.scl <- createSeasonalData_LOOCV(oceanData = oceanData, years = years, months = months, year_mo=year_mo, season = 4)
     
     # Get covariance between each cell's temperature and survival
-    covs1<-apply(oceanData.s1.scl[,,as.character(eval(years.fit))], 1:2, function(x) cov(x,response$val[years %in% years.fit], use="pairwise.complete.obs"))
-    covs2<-apply(oceanData.s2.scl[,,as.character(eval(years.fit))], 1:2, function(x) cov(x,response$val[years %in% years.fit], use="pairwise.complete.obs"))
-    covs3<-apply(oceanData.s3.scl[,,as.character(eval(years.fit))], 1:2, function(x) cov(x,response$val[years %in% years.fit], use="pairwise.complete.obs"))
-    covs4<-apply(oceanData.s4.scl[,,as.character(eval(years.fit))], 1:2, function(x) cov(x,response$val[years %in% years.fit], use="pairwise.complete.obs"))
+    covs1<-apply(oceanData.s1.scl[,,as.character(eval(years.fit))], 1:2, function(x) cov(x,response$val[response$year %in% years.fit], use="pairwise.complete.obs"))
+    covs2<-apply(oceanData.s2.scl[,,as.character(eval(years.fit))], 1:2, function(x) cov(x,response$val[response$year %in% years.fit], use="pairwise.complete.obs"))
+    covs3<-apply(oceanData.s3.scl[,,as.character(eval(years.fit))], 1:2, function(x) cov(x,response$val[response$year %in% years.fit], use="pairwise.complete.obs"))
+    covs4<-apply(oceanData.s4.scl[,,as.character(eval(years.fit))], 1:2, function(x) cov(x,response$val[response$year %in% years.fit], use="pairwise.complete.obs"))
     
     #********************************************************************
     # Create the index (how similar is each year to the covariance map)
@@ -94,7 +83,7 @@ LOO_CV <- function(response = response,
                                     lm(as.vector(oceanData.s4.scl[,,tt]) ~ -1 + as.vector(covs4))$coef))
     coefs_cov<-data.frame(coefs_cov)
     coefs_cov$year<-years
-    index_cov<-cbind(coefs_cov,response$val)
+    index_cov<-cbind(coefs_cov,response$val[response$year %in% years])
     colnames(index_cov)<-c("win.cov","spr.cov","sum.cov","aut.cov","year","val")
 
     #*****************************************
