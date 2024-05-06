@@ -25,7 +25,6 @@ source('R/get_index.R')
 source('R/crossValidation.R')
 
 # set parameters (for most users, leave these as they are)
-dataSet='ERSST'
 months=seq(1,12,1)
 removeBering=FALSE
 returnDataType='anom'
