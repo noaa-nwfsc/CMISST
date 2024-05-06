@@ -41,7 +41,7 @@ get_CMISST_index <- function(response, oceanData=oceanData_ERSST,
       if (season==1) seasonal[,,yy]<-(oceanData[,,year_mo$month == 1 & year_mo$year==years[yy]]+oceanData[,,year_mo$month == 2 & year_mo$year==years[yy]]+oceanData[,,year_mo$month == 3 & year_mo$year==years[yy]])/3
       if (season==2) seasonal[,,yy]<-(oceanData[,,year_mo$month == 4 & year_mo$year==years[yy]]+oceanData[,,year_mo$month == 5 & year_mo$year==years[yy]]+oceanData[,,year_mo$month == 6 & year_mo$year==years[yy]])/3
       if (season==3) seasonal[,,yy]<-(oceanData[,,year_mo$month == 7 & year_mo$year==years[yy]]+oceanData[,,year_mo$month == 8 & year_mo$year==years[yy]]+oceanData[,,year_mo$month == 9 & year_mo$year==years[yy]])/3
-      if (season==4) seasonal[,,yy]<-(oceanData[,,year_mo$month == 10 & year_mo$year==years[yy]]+oceanData[,,year_mo$month == 11 & year_mo$year==years[yy]]+oceanData[,,year_mo$month == 11 & year_mo$year==years[yy]])/3
+      if (season==4) seasonal[,,yy]<-(oceanData[,,year_mo$month == 10 & year_mo$year==years[yy]]+oceanData[,,year_mo$month == 11 & year_mo$year==years[yy]]+oceanData[,,year_mo$month == 12 & year_mo$year==years[yy]])/3
     } 
     # This scales (Z-score) the data cell-wise
     # The aperm is needed because for some reason the apply function returns the third dimension (time) as the first dimension
@@ -78,11 +78,11 @@ get_CMISST_index <- function(response, oceanData=oceanData_ERSST,
   colnames(index_cov)<-c("year","win.cov","spr.cov","sum.cov","aut.cov","val")
 
   # Returns index as a list
-  #  cmisst[[1]] contains 6 columns (as one list item): 4 seasonal indices, year, response
+  #  cmisst[[1]] contains 6 columns (as one list item): year, 4 seasonal indices, response
   #  cmisst[[2]] winter spatial covariance values (for maps)
   #  cmisst[[3]] spring spatial covariance values (for maps)
   #  cmisst[[4]] summer spatial covariance values (for maps)
   #  cmisst[[5]] autumn spatial covariance values (for maps)
-  #  cmisst[[6]] lat, long min and max, 1 list item
+  #  cmisst[[6]] lat, long min and max, as 1 list item
   return(list(index_cov, covs1, covs2, covs3, covs4, c(min.lat, max.lat, min.lon, max.lon)))
 }
