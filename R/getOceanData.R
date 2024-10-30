@@ -1,17 +1,12 @@
 # Extract data from global data sets
 # User sets extent and return object type
 
-
-#*****************************************
-#*****************************************
-# Not needed by most users. The resulting data
-#  have been stored in RData files, which will
-#  be updated annually by Brian Burke
-#*****************************************
-#*****************************************
-
+# To run this code, you will need to download the original data files
+# and store them in data/SST/ or data/SSH
 
 # SST data are from ERSST (https://www.ncei.noaa.gov/pub/data/cmb/ersst/v5/netcdf/)
+# But I obtained them where they have been reposted in a slightly different format here:
+#   https://psl.noaa.gov/data/gridded/data.noaa.ersst.v5.html
 # ERSST is a 2x2 degree gloabal dataset
 
 # references: Huang et al, 2017: Extended Reconstructed Sea Surface Temperatures Version 5 (ERSSTv5): Upgrades, Validations, and Intercomparisons. Journal of Climate, https://doi.org/10.1175/JCLI-D-16-0836.1
@@ -19,7 +14,6 @@
 # acknowledgment: The NOAA Extended Reconstructed Sea Surface Temperature (ERSST) data are provided by the NOAA National Centers for Environmental Information(NCEI)
 
 # SSH Data from: https://psl.noaa.gov/data/gridded/data.godas.html
-# Or maybe here: https://downloads.psl.noaa.gov/Datasets/godas/
 
 library(ncdf4)
 
@@ -48,15 +42,15 @@ getOceanData<-function(dataSet='ERSST',
 
   # open a (any) netCDF file to extract lats and longs
   if (dataSet == 'ERSST') {
-    #ncfname <- "data/../../data/SST/ersst.v5.202001.nc"
-    ncfname <- "data/SST/ersst.v5.202001.nc"
+    ncfname <- "data/SST/sst.mon.ltm.1991-2020.nc"
+    #ncfname <- "data/SST/sst.mon.ltm.1981-2010.nc"
     ncin <- nc_open(ncfname)
     lons <- ncvar_get(ncin,"lon")
     lats <- ncvar_get(ncin,"lat",verbose=F)
+    sst.ltm <- ncvar_get(ncin,"sst")
     nc_close(ncin)
   }
   if (dataSet == 'SSH') {
-    #ncfname <- "data/../../data/SSH/sshg.mon.ltm.1991-2020.nc"
     ncfname <- "data/SSH/sshg.mon.ltm.1991-2020.nc"
     ncin <- nc_open(ncfname) # open it
     lons <- ncvar_get(ncin,"lon")
@@ -71,7 +65,7 @@ getOceanData<-function(dataSet='ERSST',
   #***************************************************************
   
   # Index the locations in the file
-  lon.index<-which(lons > min.lon & lons < max.lon) 
+  lon.index<-which(lons >= min.lon & lons < max.lon) 
   lat.index<-which(lats > min.lat & lats < max.lat)
   lon.subset <- lons[lon.index]
   lat.subset <- lats[lat.index]
@@ -82,22 +76,29 @@ getOceanData<-function(dataSet='ERSST',
                   dimnames = list(lon.subset, lat.subset, year_mo$label))
   
   if (dataSet == 'ERSST') {
-    # Loop over files and get sst data
-    for (ym in 1:nrow(year_mo)) {
-      #ncfname <- paste0("data/../../data/SST/ersst.v5.",year_mo$year[ym],sprintf("%02d",year_mo$month[ym]),".nc")
-      ncfname <- paste0("data/SST/ersst.v5.",year_mo$year[ym],sprintf("%02d",year_mo$month[ym]),".nc")
-      ncin <- nc_open(ncfname)
-      if (returnDataType=="anom") sst <- ncvar_get(ncin,"ssta")
-      if (returnDataType=="raw") sst <- ncvar_get(ncin,"sst")
-      returnData[,,ym]<-sst[lon.index, lat.index]
-      nc_close(ncin)
+    # All of the sst data are in one file
+    ncfname <- "data/SST/sst.mnmean.nc"
+    ncin <- nc_open(ncfname)
+    sst <- ncvar_get(ncin,"sst") #float sst[lon,lat,time]
+    psl.time <- ncvar_get(ncin,"time")
+    dates <- format(as.Date("1800-01-01") + psl.time, "%Y_%m")
+    dates <- sub("(.+)_0?(.+)", "\\1_\\2", dates)
+    dimnames(sst) <- list(seq(0,358,2), seq(-88,88,2), dates)
+    # get anomaly, if requested
+    for (mo in 1:nrow(year_mo)) {
+      if (returnDataType == 'anom') {
+          sst.temp <- sst[,, dates == year_mo$label[mo]] - sst.ltm[,, year_mo$month[mo]]
+      } else sst.temp <- sst[,, dates == year_mo$label[mo]]
+      returnData[, , mo]<-sst.temp
     }
+    nc_close(ncin)
+    returnData <- returnData[,89:1,] # I think this would fix the reversed latitude
   }
   if (dataSet == 'SSH') {
-    # Loop over files and get ssh data
+    # Loop over files (one per year) and get ssh data
     for (ym in 1:nrow(year_mo)) {
       if (year_mo$month[ym]==1) {
-        ncfname <- paste0("data/../../data/SSH/sshg.",year_mo$year[ym],".nc")
+        ncfname <- paste0("data/SSH/sshg.",year_mo$year[ym],".nc")
         ncin <- nc_open(ncfname)
         ssh.temp <- ncvar_get(ncin,"sshg")
       }
