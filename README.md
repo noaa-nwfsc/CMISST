@@ -13,15 +13,26 @@ To update the data files:
  -  oceanSSTData.RData
  -  oceanSSHData.RData
  -  responseData.RData
- you will need to download the data files, store them in the data folder (use SST and SSH subfolders for SST and SSH data), and run the code in createStoredObjects.R
 
-SST data are from ERSST (https://www.ncei.noaa.gov/pub/data/cmb/ersst/v5/netcdf/)
+you will need to download the source data files, store them in the data folder (use /SST and /SSH subfolders for SST and SSH data), and run the code in createStoredObjects.R
+
+SST data are from ERSST (https://www.ncei.noaa.gov/pub/data/cmb/ersst/v5/netcdf/).
 But I obtained them where they have been reposted in a slightly different format here:
-https://psl.noaa.gov/data/gridded/data.noaa.ersst.v5.html
+https://psl.noaa.gov/data/gridded/data.noaa.ersst.v5.html.
+
 ERSST is a 2x2 degree gloabal dataset
 
-references: Huang et al, 2017: Extended Reconstructed Sea Surface Temperatures Version 5 (ERSSTv5): Upgrades, Validations, and Intercomparisons. Journal of Climate, https://doi.org/10.1175/JCLI-D-16-0836.1
-acknowledgment: The NOAA Extended Reconstructed Sea Surface Temperature (ERSST) data are provided by the NOAA National Centers for Environmental Information(NCEI)
+Reference: Huang et al, 2017: Extended Reconstructed Sea Surface Temperatures Version 5 (ERSSTv5): Upgrades, Validations, and Intercomparisons. Journal of Climate, https://doi.org/10.1175/JCLI-D-16-0836.1
+
+Use acknowledgment: The NOAA Extended Reconstructed Sea Surface Temperature (ERSST) data are provided by the NOAA National Centers for Environmental Information(NCEI)
 
 SSH Data from: https://psl.noaa.gov/data/gridded/data.godas.html
+
+## Running CMISST
+
+R/run_CMISST.R contains all the code needed to run the model.
+
+I would suggest running this code line by line.  The top portion of this script sets the parameters to use and sources functions.  The middle of the script runs the model initially.  The bottom of the script is to plot results.
+
+Once the functions have been defined, you can rerun updateCMISST with the same parameters or after altering parameters.
 

@@ -86,3 +86,25 @@ oceanData_SSH<-getOceanData(dataSet=dataSet,
 save(x = "oceanData_SSH", file = 'data/oceanSSHData.RData')
 load('data/oceanSSHData.RData')
 
+
+
+# AdultCounts -------------------------------------------------------------
+
+
+# Dam counts from Columbia Basin Research (CBR)
+#  Data Access in Real Time (DART)
+sp_Chinook <- read.csv("https://www.cbr.washington.edu/dart/cs/php/rpt/adult_annual.php?sc=1&outputFormat=csv&proj=BON&startdate=1%2F1&enddate=12%2F31&run=1")[,c("Year","Chinook")]
+colnames(sp_Chinook)[2] <- "Sp_Chinook"
+fa_Chinook <- read.csv("https://www.cbr.washington.edu/dart/cs/php/rpt/adult_annual.php?sc=1&outputFormat=csv&proj=BON&startdate=1%2F1&enddate=12%2F31&run=3")[,c("Year","Chinook")]
+colnames(fa_Chinook)[2] <- "Fa_Chinook"
+steelhead <- read.csv("https://www.cbr.washington.edu/dart/cs/php/rpt/adult_annual.php?sc=1&outputFormat=csv&proj=BON&startdate=1%2F1&enddate=12%2F31&run=")[,c("Year","Steelhead")]
+
+# Create the data frame
+response <- merge(merge(sp_Chinook, fa_Chinook), steelhead)
+response <- response[response$Year <= 2024 & response$Year >= 1950 & !is.na(response$Year),]
+names(response)[names(response) == 'Year'] <- 'year'
+
+save(x = "response", file = 'data/responseData.RData')
+load('data/oceanSSHData.RData')
+
+
