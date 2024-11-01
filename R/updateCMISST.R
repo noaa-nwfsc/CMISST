@@ -42,7 +42,6 @@ updateCMISST <- function() {
                              min.lat = min.lat, max.lat = max.lat,
                              years = years, years.fit = years.fit,
                              months = months,
-                             returnDataType = returnDataType,
                              removeBering = removeBering)
   
   if (input.loocv) {

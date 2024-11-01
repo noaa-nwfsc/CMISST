@@ -45,10 +45,10 @@ makeBiplot <- function(input.season = input.season, cmisst = cmisst) {
   # Biplot with response
   index <- cmisst[[1]]
   season <- switch(input.season,
-                   win = 1,
-                   spr = 2,
-                   sum = 3,
-                   aut = 4)
+                   win = 2,
+                   spr = 3,
+                   sum = 4,
+                   aut = 5)
   index$ind <- index[,season]
   myTitle <- switch(input.season,
                     win = "Winter",

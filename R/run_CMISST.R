@@ -35,9 +35,6 @@ source('R/crossValidation.R')
 # set parameters (for most users, leave these as they are)
 months=seq(1,12,1)
 removeBering=FALSE
-returnDataType='anom'
-returnObjectType='array'
-
 
 # Parameters --------------------------------------------------------------
 
@@ -120,14 +117,14 @@ makeCovarianceMap(input.season = input.season, cmisst = cmisst)
 makeBiplot(input.season = input.season, cmisst = cmisst)
 
 # Make Time series Plot
-makeTimeSeriesPlot(input.season = 'spr', cmisst = cmisst,
+makeTimeSeriesPlot(input.season = input.season, cmisst = cmisst,
                    ylab = "Counts", yaxis_scaler = 1000)
 
 # Output: Index time series
 makeIndexPlot(cmisst = cmisst)
   
 # Output: Observed and predicted time series from the LOO
-makeLOOplot(cmisst = cmisst, season = "spr")
+makeLOOplot(cmisst = cmisst, season = input.season)
 
 # Print the sesonal indices and the scaled response variable
 makeTable(cmisst = cmisst)

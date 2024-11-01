@@ -37,12 +37,9 @@ max.lat=90
 years=seq(1967, 2023, 1)
 months=seq(1,12,1)
 removeBering=FALSE
-returnDataType='anom'
-returnObjectType='array'
 
 # Function defined in create_OceanData_Object.R
 oceanData_ERSST<-getOceanData(dataSet=dataSet,
-                        returnDataType=returnDataType, returnObjectType=returnObjectType,
                         min.lon=min.lon, max.lon=max.lon,
                         min.lat=min.lat, max.lat=max.lat,
                         years = years, months = months,
@@ -74,11 +71,8 @@ max.lat=90
 years=seq(1980, 2023, 1)
 months=seq(1,12,1)
 removeBering=FALSE
-returnDataType='anom'
-returnObjectType='array'
 
 oceanData_SSH<-getOceanData(dataSet=dataSet,
-                            returnDataType=returnDataType, returnObjectType=returnObjectType,
                             min.lon=min.lon, max.lon=max.lon,
                             min.lat=min.lat, max.lat=max.lat,
                             years = years, months = months,

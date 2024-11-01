@@ -8,8 +8,6 @@ get_CMISST_index <- function(response, oceanData=oceanData_ERSST,
                              months=1:12, years.pred=NA,
                              min.lon=158, max.lon=246,
                              min.lat=10, max.lat=62,
-                             returnDataType='anom',
-                             returnObjectType='array',
                              removeBering=TRUE) {
   # Verify that the response is what we expect
   if (ncol(response)!=2) { print("incorrect data - requires a 2-column data frame with year and the response"); return(NA) }
