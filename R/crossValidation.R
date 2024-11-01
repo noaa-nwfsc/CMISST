@@ -18,13 +18,13 @@ LOO_CV <- function(response = response,
   
   # Loop over just the last "loocvYears" years
   n<-length(years)
-  for (this_year in years[(n-(loocvYears-1)):n]) { 
+  for (this_year in years[(n-(loocvYears-1)):n]) { # just the last "loocvYears" years
     years.fit<-years[!years %in% this_year]
     years.pred<-years[years %in% this_year]
     
     # Get the index
     cmisst_loo <- get_CMISST_index(response = response,
-                               oceanData = oceanData, years.pred = years.pred,
+                               oceanData = oceanData,
                                min.lon = min.lon, max.lon = max.lon,
                                min.lat = min.lat, max.lat = max.lat,
                                years = years, years.fit = years.fit,

@@ -37,7 +37,7 @@ max.lat=90
 years=seq(1967, 2023, 1)
 months=seq(1,12,1)
 
-# Function defined in create_OceanData_Object.R
+# Function defined in getOceanData.R
 oceanData_ERSST<-getOceanData(dataSet=dataSet,
                         min.lon=min.lon, max.lon=max.lon,
                         min.lat=min.lat, max.lat=max.lat,

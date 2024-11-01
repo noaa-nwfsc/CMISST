@@ -28,18 +28,18 @@ updateCMISST <- function() {
   # Log (if requested) and scale the response variable
   if(input.log) response.tmp$val <- log(response.tmp$val)
   response.tmp$val.scl <- scale(response.tmp$val)
-  
+
   # Which years are being fit to?
   years.fit <- years[years %in% response.tmp$year]
   
   # Calculate the CMISST index
   cmisst <- get_CMISST_index(response = response.tmp[,c("year","val.scl")],
-                             oceanData = oceanData, 
+                             oceanData = oceanData,
                              min.lon = min.lon, max.lon = max.lon,
                              min.lat = min.lat, max.lat = max.lat,
                              years = years, years.fit = years.fit,
                              months = months)
-  
+
   if (input.loocv) {
     loocv <- LOO_CV(response = response.tmp[,c("year","val.scl")],
                     oceanData = oceanData, loocvYears = loocvYears,
