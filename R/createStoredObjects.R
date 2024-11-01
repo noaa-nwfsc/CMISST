@@ -36,14 +36,12 @@ min.lat=-90
 max.lat=90
 years=seq(1967, 2023, 1)
 months=seq(1,12,1)
-removeBering=FALSE
 
 # Function defined in create_OceanData_Object.R
 oceanData_ERSST<-getOceanData(dataSet=dataSet,
                         min.lon=min.lon, max.lon=max.lon,
                         min.lat=min.lat, max.lat=max.lat,
-                        years = years, months = months,
-                        removeBering = removeBering)
+                        years = years, months = months)
 save(x = "oceanData_ERSST", file = 'data/oceanSSTData.RData')
 load('data/oceanSSTData.RData')
 
@@ -70,13 +68,11 @@ min.lat=-90
 max.lat=90
 years=seq(1980, 2023, 1)
 months=seq(1,12,1)
-removeBering=FALSE
 
 oceanData_SSH<-getOceanData(dataSet=dataSet,
                             min.lon=min.lon, max.lon=max.lon,
                             min.lat=min.lat, max.lat=max.lat,
-                            years = years, months = months,
-                            removeBering = removeBering)
+                            years = years, months = months)
 save(x = "oceanData_SSH", file = 'data/oceanSSHData.RData')
 load('data/oceanSSHData.RData')
 

@@ -1,5 +1,4 @@
 # Run LOO cross-validation, removing each year sequentially and predicting that year
-# This version uses the getIndex.R script to simplify the code
 
 #*************************************************************
 #  Create a loop for cross-validation
@@ -29,8 +28,7 @@ LOO_CV <- function(response = response,
                                min.lon = min.lon, max.lon = max.lon,
                                min.lat = min.lat, max.lat = max.lat,
                                years = years, years.fit = years.fit,
-                               months = months,
-                               removeBering = removeBering)
+                               months = months)
     
 
     # output

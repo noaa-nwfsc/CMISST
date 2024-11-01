@@ -14,8 +14,7 @@ updateCMISST <- function() {
   min.lat = input.lat[1]
   max.lat = input.lat[2]
   years = seq(input.years[1], input.years[2], 1)
-  years = sort(unique(c(years, input.years.pred)))
-  
+
   response.tmp <- response
   # Lag the response variable
   response.tmp$year <- response.tmp$year - as.numeric(input.lag)
@@ -31,18 +30,15 @@ updateCMISST <- function() {
   response.tmp$val.scl <- scale(response.tmp$val)
   
   # Which years are being fit to?
-  if (!is.na(input.years.pred[1])) {
-    years.fit<-years[!years %in% input.years.pred & years %in% response.tmp$year] # will be needed to calculate the covariance
-  } else years.fit <- years[years %in% response.tmp$year]
+  years.fit <- years[years %in% response.tmp$year]
   
   # Calculate the CMISST index
   cmisst <- get_CMISST_index(response = response.tmp[,c("year","val.scl")],
-                             oceanData = oceanData, years.pred = input.years.pred,
+                             oceanData = oceanData, 
                              min.lon = min.lon, max.lon = max.lon,
                              min.lat = min.lat, max.lat = max.lat,
                              years = years, years.fit = years.fit,
-                             months = months,
-                             removeBering = removeBering)
+                             months = months)
   
   if (input.loocv) {
     loocv <- LOO_CV(response = response.tmp[,c("year","val.scl")],

@@ -34,7 +34,6 @@ source('R/crossValidation.R')
 
 # set parameters (for most users, leave these as they are)
 months=seq(1,12,1)
-removeBering=FALSE
 
 # Parameters --------------------------------------------------------------
 
@@ -65,11 +64,6 @@ input.long= c(158, 246)
 #  Years after the most recent year in the response will be predicted
 input.years= c(1980, 2023)
 
-# Prediction years (ocean years)
-#  These years will not be included in calculating the CMISST index,
-#  but will be in the index output for use in a predictive model
-#input.years.pred=c(2020)
-input.years.pred=NA
 
 #************************************
 #  For Leave One Out Cross-validation

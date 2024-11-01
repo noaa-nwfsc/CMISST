@@ -63,7 +63,7 @@ makeBiplot <- function(input.season = input.season, cmisst = cmisst) {
        x = par("usr")[1]*0.8, y=par("usr")[4]*0.80, cex=1.6, col="blue")
   if (input.loocv) {
     mae <- cmisst[[7]]
-    text(paste("MAE =", round(mae[season,"mae"], 2)),
+    text(paste("MAE =", round(mean(abs(mae[mae$season==input.season,"mae"])), 2)),
          x = par("usr")[1]*0.75, y=par("usr")[4]*0.60, cex=1.6, col="blue")
   }
 }
@@ -96,7 +96,8 @@ makeTimeSeriesPlot <- function(input.season = input.season, cmisst = cmisst,
   preds_new<-reverse_scale(preds_new, attr(response.tmp$val.scl, "scaled:center"), attr(response.tmp$val.scl, "scaled:scale"))
   if (input.log) preds_new<- exp(preds_new)
   # replace just the ones that were not used during fitting
-  preds[index$year %in% input.years.pred,]<-preds_new[index$year %in% input.years.pred,]
+  #preds[index$year %in% input.years.pred,]<-preds_new[index$year %in% input.years.pred,]
+  preds[is.na(index$val),]<-preds_new[is.na(index$val),]
   
   preds<-data.frame(preds)
   # unlag the year to show the plot in return year
@@ -136,7 +137,7 @@ makeLOOplot <- function(cmisst = cmisst, season = "spr") {
   index <- cmisst[[7]] # this is just the loo results
   index2<-index[index$season==season & index$model=="cmisst",]
   lines(index2$year, index2$pred, lwd=3, col="deepskyblue2")
-  text(labels = paste("LOO MAE CMISST =", round(mean(index2$mae),2)),
+  text(labels = paste("LOO MAE CMISST =", round(mean(abs(index2$mae)),2)),
        x = par("usr")[1]+9, y=par("usr")[4]*0.80, cex=1.0, col="deepskyblue2")
 }
 

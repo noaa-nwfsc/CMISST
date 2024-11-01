@@ -21,15 +21,11 @@ library(ncdf4)
 # Create the function
 #***************************************************************
 getOceanData<-function(dataSet='ERSST',
-                 returnDataType='anom', returnObjectType='array',
                  min.lon=158, max.lon=246,
                  min.lat=10, max.lat=62,
-                 years=seq(1980, 2020, 1), months=seq(1,12,1),
-                 removeBering=TRUE) {
+                 years=seq(1980, 2020, 1), months=seq(1,12,1)) {
 
   # Check conditions
-  if (!returnDataType %in% c('anom','raw')) return (cat("returnDataType must be either 'anom' or 'raw'"))
-  if (!returnObjectType %in% c('array')) return (cat("returnObjectType must be 'array'"))
   if (min.lon < 0 | min.lon > 360 | max.lon < 0 | max.lon > 360) return (cat("Longitude is in degrees east (Tokyo is 139.8, Seattle is 237.6)"))
   if (min.lat < -90 | min.lat > 90 | max.lat < -90 | max.lat > 90) return (cat("Latitude is in degrees from the equator (should not exceed 90)"))
 
@@ -86,10 +82,7 @@ getOceanData<-function(dataSet='ERSST',
     dimnames(sst) <- list(seq(0,358,2), seq(-88,88,2), dates)
     # get anomaly, if requested
     for (mo in 1:nrow(year_mo)) {
-      if (returnDataType == 'anom') {
-          sst.temp <- sst[,, dates == year_mo$label[mo]] - sst.ltm[,, year_mo$month[mo]]
-      } else sst.temp <- sst[,, dates == year_mo$label[mo]]
-      returnData[, , mo]<-sst.temp
+      returnData[, , mo] <- sst[,, dates == year_mo$label[mo]] - sst.ltm[,, year_mo$month[mo]]
     }
     nc_close(ncin)
     returnData <- returnData[,89:1,] # I think this would fix the reversed latitude
@@ -103,27 +96,11 @@ getOceanData<-function(dataSet='ERSST',
         ssh.temp <- ncvar_get(ncin,"sshg")
       }
       # get anomaly, if requested
-      if (returnDataType == 'anom') {
-        ssh.temp[,, year_mo$month[ym]]<-ssh.temp[,, year_mo$month[ym]] - ssh.ltm[,, year_mo$month[ym]]
-      }
+      ssh.temp[,, year_mo$month[ym]]<-ssh.temp[,, year_mo$month[ym]] - ssh.ltm[,, year_mo$month[ym]]
       returnData[,,ym]<-ssh.temp[lon.index, lat.index, year_mo$month[ym]]
       if (year_mo$month[ym]==12) nc_close(ncin)
     }
   }
     
-  if (removeBering) {
-    # We extracted SST data for the full grid, but we don't want some portions of it
-    #  Remove the Bering Sea
-    returnData[lon.subset < 206, lat.subset > 56,] <- NA
-    returnData[lon.subset < 202, lat.subset > 54,] <- NA
-    returnData[lon.subset < 196, lat.subset > 52,] <- NA
-    returnData[lon.subset < 158, lat.subset > 50,] <- NA
-    returnData[lon.subset < 156, lat.subset > 48,] <- NA
-    returnData[lon.subset < 154, lat.subset > 46,] <- NA
-    returnData[lon.subset < 152, lat.subset > 44,] <- NA
-    returnData[lon.subset < 148, lat.subset > 42,] <- NA
-    returnData[lon.subset < 146, lat.subset > 40,] <- NA
-  }
-  
   return(returnData)
 }
