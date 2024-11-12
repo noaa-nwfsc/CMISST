@@ -57,6 +57,6 @@ LOO_CV <- function(response = response,
   se <- function(x) { return(sd(x)/sqrt(length(x))) }
   mae$season<-factor(mae$season, levels = c("win","spr","sum","aut"))
   # Trying this out - if I leave this line out, I might get all the individual predictions
-  if(exists("pred_out") & !pred_out) mae<-summaryBy(mae ~ model+season, data = mae, FUN = c(mean, se))
+  if(exists("pred_out")) if (!pred_out) mae<-summaryBy(mae ~ model+season, data = mae, FUN = c(mean, se))
   return(list(mae))
 }

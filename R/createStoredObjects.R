@@ -34,7 +34,7 @@ min.lon=0
 max.lon=360
 min.lat=-90
 max.lat=90
-years=seq(1967, 2023, 1)
+years=seq(1950, 2023, 1)
 months=seq(1,12,1)
 
 # Function defined in getOceanData.R
@@ -43,7 +43,7 @@ oceanData_ERSST<-getOceanData(dataSet=dataSet,
                         min.lat=min.lat, max.lat=max.lat,
                         years = years, months = months)
 save(x = "oceanData_ERSST", file = 'data/oceanSSTData.RData')
-load('data/oceanSSTData.RData')
+#load('data/oceanSSTData.RData')
 
 
 # SSH ---------------------------------------------------------------------
@@ -74,7 +74,7 @@ oceanData_SSH<-getOceanData(dataSet=dataSet,
                             min.lat=min.lat, max.lat=max.lat,
                             years = years, months = months)
 save(x = "oceanData_SSH", file = 'data/oceanSSHData.RData')
-load('data/oceanSSHData.RData')
+#load('data/oceanSSHData.RData')
 
 
 
@@ -95,6 +95,6 @@ response <- response[response$Year <= 2024 & response$Year >= 1950 & !is.na(resp
 names(response)[names(response) == 'Year'] <- 'year'
 
 save(x = "response", file = 'data/responseData.RData')
-load('data/oceanSSHData.RData')
+#load('data/oceanSSHData.RData')
 
 

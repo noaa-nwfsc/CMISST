@@ -23,7 +23,6 @@ load("data/land.Rdata")
 load('data/responseData.RData')
 # ERSST data
 load('data/oceanSSTData.RData')
-oceanData <- oceanData_ERSST
 
 # define the updateCMISST() function
 source('R/updateCMISST.R')
@@ -41,6 +40,8 @@ months=seq(1,12,1)
 #       Define Parameters
 #************************************
 input.spatialData = "ERSST"
+if (input.spatialData == "ERSST") oceanData <- oceanData_ERSST
+if (input.spatialData == "SSH") oceanData <- oceanData_SSH
 
 # Input: Choose a stock 
 input.stock = "Sp_Chinook"
@@ -72,7 +73,7 @@ input.years= c(1980, 2023)
 #   emulating a forecasting scenario.  How many years should be included?
 #   E.g., 5 will only test the 5 most recent years, and using the full
 #   time series length will remove every data point (one at a time)
-loocvYears=5 # the most recent X years to include in the LOO CV
+loocvYears=10 # the most recent X years to include in the LOO CV
 
 # MAE LOO CV? 
 input.loocv= TRUE

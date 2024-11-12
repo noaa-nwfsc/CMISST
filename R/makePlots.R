@@ -63,6 +63,7 @@ makeBiplot <- function(input.season = input.season, cmisst = cmisst) {
        x = par("usr")[1]*0.8, y=par("usr")[4]*0.80, cex=1.6, col="blue")
   if (input.loocv) {
     mae <- cmisst[[7]]
+    colnames(mae)[colnames(mae)=="mae.mean"] <- "mae"
     text(paste("MAE =", round(mean(abs(mae[mae$season==input.season,"mae"])), 2)),
          x = par("usr")[1]*0.75, y=par("usr")[4]*0.60, cex=1.6, col="blue")
   }
