@@ -1,5 +1,3 @@
-# This is not ready to use - still being assembled
-
 
 # Disclaimer
 
@@ -8,13 +6,12 @@ This repository is a scientific product and is not official communication of the
 
 ## Data sources
 
-To update the data files:
+ -  responseData.RData
  -  land.RData
  -  oceanSSTData.RData
- -  oceanSSHData.RData
- -  responseData.RData
-
-you will need to download the source data files, store them in the data folder (use /SST and /SSH subfolders for SST and SSH data), and run the code in createStoredObjects.R
+ -  oceanSSHData.RData (this one is too large to upload, so will have to be created by the user)
+ 
+To update the data files, you will need to download the source data files, store them in the data folder (use /SST and /SSH subfolders for SST and SSH data), and run the code in createStoredObjects.R
 
 SST data are from ERSST (https://www.ncei.noaa.gov/pub/data/cmb/ersst/v5/netcdf/).
 But I obtained them where they have been reposted in a slightly different format here:
@@ -26,7 +23,7 @@ Reference: Huang et al, 2017: Extended Reconstructed Sea Surface Temperatures Ve
 
 Use acknowledgment: The NOAA Extended Reconstructed Sea Surface Temperature (ERSST) data are provided by the NOAA National Centers for Environmental Information(NCEI)
 
-SSH Data from: https://psl.noaa.gov/data/gridded/data.godas.html
+SSH Data from: https://psl.noaa.gov/data/gridded/data.godas.html and is 0.33x1 degree
 
 ## Running CMISST
 
@@ -34,5 +31,5 @@ R/run_CMISST.R contains all the code needed to run the model.
 
 I would suggest running this code line by line.  The top portion of this script sets the parameters to use and sources functions.  The middle of the script runs the model initially.  The bottom of the script is to plot results.
 
-Once the functions have been defined, you can rerun updateCMISST with the same parameters or after altering parameters.
+Once the functions have been defined, you can rerun updateCMISST() with the same parameters or after altering parameters.
 
