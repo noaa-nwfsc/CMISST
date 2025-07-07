@@ -76,7 +76,8 @@ makeTimeSeriesPlot <- function(input.season = input.season, cmisst = cmisst,
   response.tmp$year <- response.tmp$year - as.numeric(input.lag)
   response.tmp <- response.tmp[response.tmp$year %in% seq(input.years[1], input.years[2], 1), c('year', input.stock)]
   colnames(response.tmp) <- c('year','val')
-  if(input.log) response.tmp$val <- log(response.tmp$val)
+  if(input.link == "log") response.tmp$val <- log(response.tmp$val)
+  if(input.link == "logit") response.tmp$val <- boot::logit(response.tmp$val)
   response.tmp$val.scl <- scale(response.tmp$val)
   #reverse_scale(response.tmp$val.scl)
   
@@ -84,18 +85,21 @@ makeTimeSeriesPlot <- function(input.season = input.season, cmisst = cmisst,
   season <- switch(input.season,
                    win = 2, spr = 3, sum = 4, aut = 5)
   index$ind <- index[,season]
-  index$counts <- reverse_scale(index$val, attr(response.tmp$val.scl, "scaled:center"), attr(response.tmp$val.scl, "scaled:scale"))
-  if (input.log) index$counts <- exp(index$counts)
+  index$response <- reverse_scale(index$val, attr(response.tmp$val.scl, "scaled:center"), attr(response.tmp$val.scl, "scaled:scale"))
+  if (input.link == "log") index$response <- exp(index$response)
+  if (input.link == "logit") index$response <- boot::inv.logit(index$response)
   myTitle <- switch(input.season,
                     win = "Winter", spr = "Spring", sum = "Summer", aut = "Autumn")
   lm1 <- lm(index$val~index$ind)
   preds<-predict(lm1, newdata = index, interval = "confidence")
   preds<-reverse_scale(preds, attr(response.tmp$val.scl, "scaled:center"), attr(response.tmp$val.scl, "scaled:scale"))
-  if (input.log) preds<-exp(preds)
+  if (input.link == "log") preds <- exp(preds)
+  if (input.link == "logit") preds <- boot::inv.logit(preds)
   # Use prediction interval for predicted points
   preds_new<-predict(lm1, newdata = index, interval = "prediction")
   preds_new<-reverse_scale(preds_new, attr(response.tmp$val.scl, "scaled:center"), attr(response.tmp$val.scl, "scaled:scale"))
-  if (input.log) preds_new<- exp(preds_new)
+  if (input.link == "log") preds_new <- exp(preds_new)
+  if (input.link == "logit") preds_new <- boot::inv.logit(preds_new)
   # replace just the ones that were not used during fitting
   #preds[index$year %in% input.years.pred,]<-preds_new[index$year %in% input.years.pred,]
   preds[is.na(index$val),]<-preds_new[is.na(index$val),]
@@ -104,10 +108,10 @@ makeTimeSeriesPlot <- function(input.season = input.season, cmisst = cmisst,
   # unlag the year to show the plot in return year
   index$year_return <- index$year + input.lag
   preds$year_return <- index$year_return
-  # Plot for SOEM talk in 2024
+
   ggplot() +
-    geom_line(data = index, aes(x=year_return, y=counts/yaxis_scaler)) +
-    geom_point(data = index, aes(x=year_return, y=counts/yaxis_scaler)) +
+    geom_line(data = index, aes(x=year_return, y=response/yaxis_scaler)) +
+    geom_point(data = index, aes(x=year_return, y=response/yaxis_scaler)) +
     theme_classic() +
     ylab(label = ylab) + xlab("Response Year") +
     geom_line(data=preds, aes(x=year_return, y=fit/yaxis_scaler), color="deepskyblue2", linewidth=1.3) +
@@ -148,12 +152,14 @@ makeTable <- function(cmisst = cmisst) {
   response.tmp$year <- response.tmp$year - as.numeric(input.lag)
   response.tmp <- response.tmp[response.tmp$year %in% seq(input.years[1], input.years[2], 1), c('year', input.stock)]
   colnames(response.tmp) <- c('year','val')
-  if(input.log) response.tmp$val <- log(response.tmp$val)
+  if(input.link == "log") response.tmp$val <- log(response.tmp$val)
+  if(input.link == "logit") response.tmp$val <- boot::logit(response.tmp$val)
   response.tmp$val.scl <- scale(response.tmp$val)
   index <- cmisst[[1]]
   index$response <- reverse_scale(index$val, attr(response.tmp$val.scl, "scaled:center"), attr(response.tmp$val.scl, "scaled:scale"))
-  if (input.log) index$response <- exp(index$response)
-
+  if (input.link == "log") index$response <- exp(index$response)
+  if (input.link == "logit") index$response <- boot::inv.logit(index$response)
+  
   # Output: Table
   out<-cmisst[[1]]
   out$year <- as.integer(out$year)#out <- out[,c(5,6,1:4)]

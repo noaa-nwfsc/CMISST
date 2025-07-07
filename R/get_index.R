@@ -1,8 +1,6 @@
 # This will create the CMISST index, given a response variable time series
 #  and a user-specified spatial ocean variable
 
-#source("create_OceanData_Object.R")
-
 get_CMISST_index <- function(response, oceanData=oceanData_ERSST,
                              years=NA, years.fit=years.fit,
                              months=1:12,

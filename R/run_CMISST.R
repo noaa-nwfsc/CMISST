@@ -8,19 +8,20 @@ library(reshape2)
 library(ggplot2)
 library(RColorBrewer)
 library(doBy)
-
-
-# Data --------------------------------------------------------------------
-
+library(dplyr)
 
 #************************************
-# Load any data files
+#   ---- Load any data files ----
 #************************************
 
 # land geo file for plotting the map
 load("data/land.Rdata")
 # Bonneville Dam Counts
 load('data/responseData.RData')
+# Snake Sp/Su Chinook SAR
+load('data/responseDataSnake.RData')
+response <- merge(response, Snake_SAR, all = TRUE)
+response <- response %>% rename(Snake_SAR = meanSAR)
 # ERSST data
 load('data/oceanSSTData.RData')
 
@@ -30,14 +31,13 @@ source('R/updateCMISST.R')
 source('R/get_index.R')
 # Define LOO_CV(), used by updateCMISST function
 source('R/crossValidation.R')
+# Define the plotting functions
+source("R/makePlots.R")
 
-# set parameters (for most users, leave these as they are)
-months=seq(1,12,1)
-
-# Parameters --------------------------------------------------------------
 
 #************************************
-#       Define Parameters
+#    ---- Define Parameters ----
+# set parameters (for most users, leave these as they are)
 #************************************
 input.spatialData = "ERSST"
 if (input.spatialData == "ERSST") oceanData <- oceanData_ERSST
@@ -49,7 +49,9 @@ input.stock = "Sp_Chinook"
 #input.stock = "Steelhead"
 
 # Input: log response?
-input.log = TRUE
+input.link = "log"
+#input.link = "logit"
+#input.link = "None"
 
 # Input: lag response? 
 input.lag= 2
@@ -65,27 +67,30 @@ input.long= c(158, 246)
 #  Years after the most recent year in the response will be predicted
 input.years= c(1980, 2023)
 
+months=seq(1,12,1)
+
 
 #************************************
-#  For Leave One Out Cross-validation
+#  ---- Leave One Out Cross-validation ----
 #************************************
+# Calculate Mean Absolute Error from a LOO CV? 
+input.loocv= TRUE
+
 # The script will leave only the most recent years out,
 #   emulating a forecasting scenario.  How many years should be included?
 #   E.g., 5 will only test the 5 most recent years, and using the full
 #   time series length will remove every data point (one at a time)
 loocvYears=10 # the most recent X years to include in the LOO CV
 
-# MAE LOO CV? 
-input.loocv= TRUE
 # Do we want each individual season and year's prediction output (TRUE),
 #   or a mean and se per season (FALSE)
 pred_out = TRUE
 
 
-# Run ---------------------------------------------------------------------
 
 
 #************************************
+#    ---- Run the model -----
 # Function to calculate the index and return results
 #************************************
 
@@ -93,14 +98,11 @@ pred_out = TRUE
 cmisst <- updateCMISST()
 
 
-# Plot --------------------------------------------------------------------
 
 
 #************************************
-#   Plot Results
+#     ---- Plot  Results ----
 #************************************
-
-source("R/makePlots.R")
 
 # Input: What map to plot
 input.season = "spr"

@@ -26,7 +26,8 @@ updateCMISST <- function() {
   years <- years[years >= min(response.tmp$year)]
   
   # Log (if requested) and scale the response variable
-  if(input.log) response.tmp$val <- log(response.tmp$val)
+  if(input$link == "log") response.tmp$val <- log(response.tmp$val)
+  if(input$link == "logit") response.tmp$val <- qlogis(response.tmp$val)
   response.tmp$val.scl <- scale(response.tmp$val)
 
   # Which years are being fit to?
