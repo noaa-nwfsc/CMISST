@@ -69,6 +69,22 @@ makeBiplot <- function(input.season = input.season, cmisst = cmisst) {
   }
 }
 
+makeSSTPlot <- function(month = 4, year = 1980, oceanData = oceanData_ERSST, sstRange = c(-1,1)) {
+  # Covariance Map
+  myPalette <- colorRampPalette(rev(brewer.pal(11, "Spectral")), space="Lab")
+  
+  subset_array <- oceanData[, , paste0(year, "_", month)]
+  extent <- c(10,62,158,246) # min, max of lat, long
+
+  gg <- ggplot() + ggtitle(paste("SST", year, "-", month)) +
+    geom_raster(data = melt(subset_array), aes(x = Var1, y = Var2, fill=value)) +
+    geom_sf(data=land, color="black", fill="grey", linewidth=0.25) +
+    xlim(extent[3], extent[4]) + ylim(extent[1], extent[2]) +
+    scale_fill_gradientn(colours = myPalette(100),limits=sstRange, name="SST anomaly", na.value = "white") +
+    theme_classic() + theme(panel.border = element_rect(colour = "grey", fill=NA)) +
+    labs(x = "Longitude", y = "Latitude")
+  gg
+}
 makeTimeSeriesPlot <- function(input.season = input.season, cmisst = cmisst,
                                ylab="", yaxis_scaler=1) {
   # Time series plot in normal space

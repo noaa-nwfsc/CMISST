@@ -3,6 +3,7 @@
 
 # To run this code, you will need to download the original data files
 # and store them in data/SST/ or data/SSH
+#  This includes teh monthly data as well as the long term mean
 
 # SST data are from ERSST (https://www.ncei.noaa.gov/pub/data/cmb/ersst/v5/netcdf/)
 # But I obtained them where they have been reposted in a slightly different format here:

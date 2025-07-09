@@ -101,7 +101,7 @@ save(x = "response", file = 'data/responseData.RData')
 # Snake SAR -------------------------------------------------------------
 
 # SAR (metadata is in the file; year is outmigration year)
-# Snake_SAR <- read.csv("data/response/pitsaresu_1751568815_295.csv", header = TRUE, nrows = 25)
+# Snake_SAR <- read.csv("data/pitsaresu_1751568815_295.csv", header = TRUE, nrows = 25)
 # # mean age distribution (will be used to weight forecasts of different age cohorts)
 # Snake_age_dist <- Snake_SAR %>%
 #   mutate(

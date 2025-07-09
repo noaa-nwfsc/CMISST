@@ -6,6 +6,8 @@ get_CMISST_index <- function(response, oceanData=oceanData_ERSST,
                              months=1:12,
                              min.lon=158, max.lon=246,
                              min.lat=10, max.lat=62) {
+  # year in the response variable has already been lagged, so it represents the year of ocean entry
+  
   # Verify that the response is what we expect
   if (ncol(response)!=2) { print("incorrect data - requires a 2-column data frame with year and the response"); return(NA) }
   colnames(response)<-c("year","val")
@@ -63,10 +65,10 @@ get_CMISST_index <- function(response, oceanData=oceanData_ERSST,
   coefs_cov<-NULL
   options(na.action="na.omit")
   for (tt in 1:dim(oceanData.s1.scl)[3])
-    coefs_cov<-rbind(coefs_cov, c(lm(as.vector(oceanData.s1.scl[,,tt]) ~ -1 + as.vector(covs1))$coef,
-                                  lm(as.vector(oceanData.s2.scl[,,tt]) ~ -1 + as.vector(covs2))$coef,
-                                  lm(as.vector(oceanData.s3.scl[,,tt]) ~ -1 + as.vector(covs3))$coef,
-                                  lm(as.vector(oceanData.s4.scl[,,tt]) ~ -1 + as.vector(covs4))$coef))
+    coefs_cov<-rbind(coefs_cov, c(tryCatch(lm(as.vector(oceanData.s1.scl[,,tt]) ~ -1 + as.vector(covs1))$coef,error=function(e){NA}),
+                                  tryCatch(lm(as.vector(oceanData.s2.scl[,,tt]) ~ -1 + as.vector(covs2))$coef,error=function(e){NA}),
+                                  tryCatch(lm(as.vector(oceanData.s3.scl[,,tt]) ~ -1 + as.vector(covs3))$coef,error=function(e){NA}),
+                                  tryCatch(lm(as.vector(oceanData.s4.scl[,,tt]) ~ -1 + as.vector(covs4))$coef,error=function(e){NA})))
   coefs_cov<-data.frame(coefs_cov)
   coefs_cov$year<-years
   index_cov<-merge(coefs_cov, response[response$year %in% years.fit,], all.x=TRUE)

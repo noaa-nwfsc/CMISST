@@ -41,46 +41,55 @@ source("R/makePlots.R")
 #************************************
 input.spatialData = "ERSST"
 if (input.spatialData == "ERSST") oceanData <- oceanData_ERSST
-if (input.spatialData == "SSH") oceanData <- oceanData_SSH
+#if (input.spatialData == "SSH") oceanData <- oceanData_SSH
 
 # Input: Choose a stock 
 input.stock = "Sp_Chinook"
 #input.stock = "Fa_Chinook"
 #input.stock = "Steelhead"
+#input.stock = "Snake_SAR"
 
 # Input: log response?
-input.link = "log"
-#input.link = "logit"
+if (input.stock == "Snake_SAR") {
+  input.link = "logit"
+} else {
+  input.link = "log"
+}
 #input.link = "None"
 
 # Input: lag response? 
-input.lag= 2
+if (input.stock == "Snake_SAR") {
+  input.lag = 0 # SAR data are already based on year of ocean entry
+} else {
+  input.lag = 2
+}
 
 # Input: Latitude range 
 input.lat = c(10, 62)
 
 # Input: Longitude range 
-input.long= c(158, 246)
+input.long = c(158, 246)
 
 # Ocean Years 
 #  For salmon, this would be the year of ocean entry
 #  Years after the most recent year in the response will be predicted
-input.years= c(1980, 2023)
+#  if the SST / SSH data are available (2025 is not fully available yet)
+input.years = c(1980, 2024)
 
-months=seq(1,12,1)
+months = seq(1,12,1)
 
 
 #************************************
 #  ---- Leave One Out Cross-validation ----
 #************************************
 # Calculate Mean Absolute Error from a LOO CV? 
-input.loocv= TRUE
+input.loocv = TRUE
 
 # The script will leave only the most recent years out,
 #   emulating a forecasting scenario.  How many years should be included?
 #   E.g., 5 will only test the 5 most recent years, and using the full
 #   time series length will remove every data point (one at a time)
-loocvYears=10 # the most recent X years to include in the LOO CV
+loocvYears = 10 # the most recent X years to include in the LOO CV
 
 # Do we want each individual season and year's prediction output (TRUE),
 #   or a mean and se per season (FALSE)

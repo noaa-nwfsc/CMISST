@@ -13,32 +13,31 @@ updateCMISST <- function() {
   max.lon = input.long[2]
   min.lat = input.lat[1]
   max.lat = input.lat[2]
-  years = seq(input.years[1], input.years[2], 1)
+  years.all = seq(input.years[1], input.years[2], 1)
 
   response.tmp <- response
-  # Lag the response variable
+  # Lag the response variable, so it's also in ocean entry years
   response.tmp$year <- response.tmp$year - as.numeric(input.lag)
   # refine to just the years asked for and just the requested response variable
-  response.tmp <- response.tmp[response.tmp$year %in% years, c('year', input.stock)]
+  response.tmp <- response.tmp[response.tmp$year %in% years.all, c('year', input.stock)]
   colnames(response.tmp) <- c('year', 'val')
   # sometimes the response starts after the input.years, so limit the years in the ocean data 
-  #years <- years[years %in% response.tmp$year]
-  years <- years[years >= min(response.tmp$year)]
+  years.all <- years.all[years.all >= min(response.tmp$year)]
   
   # Log (if requested) and scale the response variable
-  if(input$link == "log") response.tmp$val <- log(response.tmp$val)
-  if(input$link == "logit") response.tmp$val <- qlogis(response.tmp$val)
+  if(input.link == "log") response.tmp$val <- log(response.tmp$val)
+  if(input.link == "logit") response.tmp$val <- boot::logit(response.tmp$val)
   response.tmp$val.scl <- scale(response.tmp$val)
 
   # Which years are being fit to?
-  years.fit <- years[years %in% response.tmp$year]
+  years.fit <- years.all[years.all %in% response.tmp$year[!is.na(response.tmp$val.scl)]]
   
   # Calculate the CMISST index
   cmisst <- get_CMISST_index(response = response.tmp[,c("year","val.scl")],
                              oceanData = oceanData,
                              min.lon = min.lon, max.lon = max.lon,
                              min.lat = min.lat, max.lat = max.lat,
-                             years = years, years.fit = years.fit,
+                             years = years.all, years.fit = years.fit,
                              months = months)
 
   if (input.loocv) {

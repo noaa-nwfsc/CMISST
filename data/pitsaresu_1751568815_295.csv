@@ -1,0 +1,36 @@
+year,meanSAR,lowerCI,upperCI,meanJuvArrivalDay,juvCount,medianJuvArrivalDay,SE,juvMinArrivalDay,juvMaxArrivalDate,adultCount,juv5%ArrivalDay,juv95%ArrivalDay,ocean1Count,ocean2Count,ocean3Count,juvLoc,adultLoc,reachName,srrtName
+2001,0.26902382782475,0.128290215148766,0.409757440500735,155,5204,155,0.0718028636101962,93,264,14,144,171,1,7,6,Bonneville,Bonneville,Bonneville (All) to Bonneville Adult,PIT-Tagged Snake River Spring/Summer Chinook ESU (All)
+2002,1.7008547008547,1.46655506227888,1.93515433943052,146,11700,147,0.119540631926437,110,213,199,131,164,30,155,14,Bonneville,Bonneville,Bonneville (All) to Bonneville Adult,PIT-Tagged Snake River Spring/Summer Chinook ESU (All)
+2003,0.7995037562892,0.654591703832343,0.944415808746057,142,14509,142,0.0739347206412534,91,197,116,125,160,34,65,17,Bonneville,Bonneville,Bonneville (All) to Bonneville Adult,PIT-Tagged Snake River Spring/Summer Chinook ESU (All)
+2004,0.674346726608598,0.40546306151534,0.943230391701855,141,3559,140,0.137185543414927,112,192,24,127,164,1,17,6,Bonneville,Bonneville,Bonneville (All) to Bonneville Adult,PIT-Tagged Snake River Spring/Summer Chinook ESU (All)
+2005,0.362116991643454,0.16562468780035,0.558609295486558,142,3590,140,0.100251175430155,119,211,13,133,160,1,9,3,Bonneville,Bonneville,Bonneville (All) to Bonneville Adult,PIT-Tagged Snake River Spring/Summer Chinook ESU (All)
+2006,1.62736632348057,1.30779668794128,1.94693595901986,136,6022,135,0.163045732418006,110,196,98,124,153,15,70,13,Bonneville,Bonneville,Bonneville (All) to Bonneville Adult,PIT-Tagged Snake River Spring/Summer Chinook ESU (All)
+2007,1.75438596491228,1.49525772224746,2.0135142075771,135,9861,134,0.132208287073889,116,219,173,125,150,53,112,8,Bonneville,Bonneville,Bonneville (All) to Bonneville Adult,PIT-Tagged Snake River Spring/Summer Chinook ESU (All)
+2008,4.70137558767195,4.15392811761435,5.24882305772955,145,5743,142,0.279309933702857,119,208,270,132,170,97,150,23,Bonneville,Bonneville,Bonneville (All) to Bonneville Adult,PIT-Tagged Snake River Spring/Summer Chinook ESU (All)
+2009,2.28962236098721,1.9977558374773,2.58148888449712,140,10089,140,0.148911491586688,113,198,231,127,154,29,173,29,Bonneville,Bonneville,Bonneville (All) to Bonneville Adult,PIT-Tagged Snake River Spring/Summer Chinook ESU (All)
+2010,1.74980980328225,1.5603636982433,1.9392559083212,140,18402,142,0.0966561760402813,113,203,322,127,155,123,175,24,Bonneville,Bonneville,Bonneville (All) to Bonneville Adult,PIT-Tagged Snake River Spring/Summer Chinook ESU (All)
+2011,0.718184429761563,0.43766890115221,0.998699958370916,132,3481,131,0.143120167657833,108,210,25,120,152,4,19,2,Bonneville,Bonneville,Bonneville (All) to Bonneville Adult,PIT-Tagged Snake River Spring/Summer Chinook ESU (All)
+2012,1.76438945669715,1.49674202790194,2.03203688549236,137,9295,136,0.136554810609802,111,208,164,124,156,43,115,6,Bonneville,Bonneville,Bonneville (All) to Bonneville Adult,PIT-Tagged Snake River Spring/Summer Chinook ESU (All)
+2013,2.1843549862763,1.87797050247721,2.4907394700754,137,8744,136,0.156318614183213,111,209,191,127,157,54,118,19,Bonneville,Bonneville,Bonneville (All) to Bonneville Adult,PIT-Tagged Snake River Spring/Summer Chinook ESU (All)
+2014,0.780711825487945,0.595874180653434,0.965549470322456,136,8710,136,0.0943049208339341,111,271,68,121,155,18,41,9,Bonneville,Bonneville,Bonneville (All) to Bonneville Adult,PIT-Tagged Snake River Spring/Summer Chinook ESU (All)
+2015,0.433609558681827,0.307192685734225,0.560026431629428,136,10378,137,0.0644984045651028,111,183,45,124,147,11,31,3,Bonneville,Bonneville,Bonneville (All) to Bonneville Adult,PIT-Tagged Snake River Spring/Summer Chinook ESU (All)
+2016,0.805394268589623,0.635859253898119,0.974929283281128,130,10678,130,0.0864974564752572,108,182,86,118,144,31,53,2,Bonneville,Bonneville,Bonneville (All) to Bonneville Adult,PIT-Tagged Snake River Spring/Summer Chinook ESU (All)
+2017,0.500758725341426,0.330332073815642,0.671185376867211,132,6590,132,0.0869523732274412,99,194,33,117,150,9,21,3,Bonneville,Bonneville,Bonneville (All) to Bonneville Adult,PIT-Tagged Snake River Spring/Summer Chinook ESU (All)
+2018,0.638922465895355,0.433706325776823,0.844138606013886,134,5791,134,0.104702112305373,108,197,37,118,153,6,31,0,Bonneville,Bonneville,Bonneville (All) to Bonneville Adult,PIT-Tagged Snake River Spring/Summer Chinook ESU (All)
+2019,0.852382797365362,0.647615819543641,1.05714977518708,138,7743,140,0.104472947868225,107,197,66,123,153,6,53,7,Bonneville,Bonneville,Bonneville (All) to Bonneville Adult,PIT-Tagged Snake River Spring/Summer Chinook ESU (All)
+2020,1.62565415877965,1.36410776785163,1.88720054970766,140,8981,141,0.133442036187762,107,201,146,124,156,21,115,10,Bonneville,Bonneville,Bonneville (All) to Bonneville Adult,PIT-Tagged Snake River Spring/Summer Chinook ESU (All)
+2021,1.40975700241143,1.18722344717513,1.63229055764772,140,10782,140,0.113537528181783,106,185,152,130,152,47,97,8,Bonneville,Bonneville,Bonneville (All) to Bonneville Adult,PIT-Tagged Snake River Spring/Summer Chinook ESU (All)
+2022,0.773449585149768,0.569829467423191,0.977069702876345,142,7111,143,0.103887815166621,119,202,55,129,157,13,38,4,Bonneville,Bonneville,Bonneville (All) to Bonneville Adult,PIT-Tagged Snake River Spring/Summer Chinook ESU (All)
+2023,1.03195739014647,0.823304765050764,1.24061001524218,140,9012,140,0.106455420967198,120,193,93,128,152,27,66,NA,Bonneville,Bonneville,Bonneville (All) to Bonneville Adult,PIT-Tagged Snake River Spring/Summer Chinook ESU (All)
+2024,0.21966662359478,0.115358493328588,0.323974753860971,137,7739,140,0.0532184338092814,109,221,17,120,145,17,NA,NA,Bonneville,Bonneville,Bonneville (All) to Bonneville Adult,PIT-Tagged Snake River Spring/Summer Chinook ESU (All)
+2025,NA,NA,NA,132,4159,133,NA,108,179,0,117,144,NA,NA,NA,Bonneville,Bonneville,Bonneville (All) to Bonneville Adult,PIT-Tagged Snake River Spring/Summer Chinook ESU (All)
+Notes:
+Columbia River DART
+Smolt-to-Adult Return (SAR) Survival Bonneville (Juvenile) to Bonneville (Adult)
+PIT-Tagged Snake River Spring/Summer Chinook ESU (All)
+Adult 0-Year Detections Excluded
+As of 2024-03-22; a minimum requirement of 7 adults detected within each pooled period for SAR Survival calculations has been introduced.
+Generated 03 Jul 2025 11:53:35 PDT. DART PIT Tag Smolt-to-Adult Return (SAR) Survival www.cbr.washington.edu/dart/query/pit_sar_esu.
+
+"DART Data Citation. Columbia River DART, Columbia Basin Research, University of Washington. (2025). PIT Tag Smolt-to-Adult Return (SAR) Survival. Available from https://www.cbr.washington.edu/dart/query/pit_sar_esu."
+
