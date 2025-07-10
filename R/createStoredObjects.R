@@ -101,22 +101,22 @@ save(x = "response", file = 'data/responseData.RData')
 # Snake SAR -------------------------------------------------------------
 
 # SAR (metadata is in the file; year is outmigration year)
-# Snake_SAR <- read.csv("data/pitsaresu_1751568815_295.csv", header = TRUE, nrows = 25)
-# # mean age distribution (will be used to weight forecasts of different age cohorts)
-# Snake_age_dist <- Snake_SAR %>%
-#   mutate(
-#     total = ocean1Count + ocean2Count + ocean3Count,
-#     ocean1 = ocean1Count / total,
-#     ocean2 = ocean2Count / total,
-#     ocean3 = ocean3Count / total
-#   ) %>%
-#   summarise(
-#     ocean1 = mean(ocean1, na.rm = TRUE),
-#     ocean2 = mean(ocean2, na.rm = TRUE),
-#     ocean3 = mean(ocean3, na.rm = TRUE)
-#   )
-# Snake_SAR <- Snake_SAR[,c("year", "meanSAR")]
-# # Convert from percentage
-# Snake_SAR$meanSAR <- Snake_SAR$meanSAR / 100
-# save(list = c("Snake_SAR","Snake_age_dist"), file = 'data/responseDataSnake.RData')
-load(file = 'data/responseDataSnake.RData')
+Snake_SAR <- read.csv("data/pitsaresu_1751568815_295.csv", header = TRUE, nrows = 25)
+# mean age distribution (will be used to weight forecasts of different age cohorts)
+Snake_age_dist <- Snake_SAR %>%
+  mutate(
+    total = ocean1Count + ocean2Count + ocean3Count,
+    ocean1 = ocean1Count / total,
+    ocean2 = ocean2Count / total,
+    ocean3 = ocean3Count / total
+  ) %>%
+  summarise(
+    ocean1 = mean(ocean1, na.rm = TRUE),
+    ocean2 = mean(ocean2, na.rm = TRUE),
+    ocean3 = mean(ocean3, na.rm = TRUE)
+  )
+Snake_SAR <- Snake_SAR[,c("year", "meanSAR")]
+# Convert from percentage
+Snake_SAR$meanSAR <- Snake_SAR$meanSAR / 100
+save(list = c("Snake_SAR","Snake_age_dist"), file = 'data/responseDataSnake.RData')
+#load(file = 'data/responseDataSnake.RData')
