@@ -13,7 +13,7 @@ get_CMISST_index <- function(response, oceanData=oceanData_ERSST,
   colnames(response)<-c("year","val")
   
   # 'years' will be considered 'all years'  If we need fit or pred, we can access them
-  year_mo<-data.frame(year=rep(years, each=length(months)), month=rep(months, length(years)),
+  year_mo <- data.frame(year=rep(years, each=length(months)), month=rep(months, length(years)),
                       label=paste(rep(years, each=length(months)), rep(months, length(years)), sep = "_"))
   
   #***************************************************************
@@ -24,14 +24,14 @@ get_CMISST_index <- function(response, oceanData=oceanData_ERSST,
   lons <- as.numeric(dimnames(oceanData)[[1]])
   lats <- as.numeric(dimnames(oceanData)[[2]])
   yr_mo <- dimnames(oceanData)[[3]]
-  lon.index<-which(lons >= min.lon & lons <= max.lon) 
-  lat.index<-which(lats >= min.lat & lats <= max.lat)
-  yr_mo.index<-which(yr_mo %in% year_mo$label)
+  lon.index <- which(lons >= min.lon & lons <= max.lon) 
+  lat.index <- which(lats >= min.lat & lats <= max.lat)
+  yr_mo.index <- which(yr_mo %in% year_mo$label)
   # Subset the ocean data with user-defined extent
   oceanData <- oceanData[lon.index, lat.index, yr_mo.index]
   
   # Create the function to calculate seasonal averages
-  createSeasonalData<-function(oceanData,
+  createSeasonalData <- function(oceanData,
                                years = years, months = months, year_mo=year_mo, season=1) {
     seasonal<-array(NA, c(dim(oceanData)[1], dim(oceanData)[2], length(years)), dimnames = list(dimnames(oceanData)[[1]], dimnames(oceanData)[[2]], years))
     for (yy in 1:length(years)) {
@@ -43,7 +43,7 @@ get_CMISST_index <- function(response, oceanData=oceanData_ERSST,
     # This scales (Z-score) the data cell-wise
     # The aperm is needed because for some reason the apply function returns the third dimension (time) as the first dimension
     oceanData.scl <- aperm(apply(seasonal, 1:2, scale), c(2,3,1))
-    dimnames(oceanData.scl)[[3]]<-years
+    dimnames(oceanData.scl)[[3]] <- years
     return(oceanData.scl)
   }
   
@@ -54,10 +54,10 @@ get_CMISST_index <- function(response, oceanData=oceanData_ERSST,
   oceanData.s4.scl <- createSeasonalData(oceanData = oceanData, years = years, months = months, year_mo=year_mo, season = 4)
 
   # Get covariance between each cell's temperature and survival (only for fit years!!)
-  covs1<-apply(oceanData.s1.scl[,,as.character(years.fit)], 1:2, function(x) cov(x, response$val[response$year %in% years.fit], use="pairwise.complete.obs"))
-  covs2<-apply(oceanData.s2.scl[,,as.character(years.fit)], 1:2, function(x) cov(x, response$val[response$year %in% years.fit], use="pairwise.complete.obs"))
-  covs3<-apply(oceanData.s3.scl[,,as.character(years.fit)], 1:2, function(x) cov(x, response$val[response$year %in% years.fit], use="pairwise.complete.obs"))
-  covs4<-apply(oceanData.s4.scl[,,as.character(years.fit)], 1:2, function(x) cov(x, response$val[response$year %in% years.fit], use="pairwise.complete.obs"))
+  covs1 <- apply(oceanData.s1.scl[,,as.character(years.fit)], 1:2, function(x) cov(x, response$val[response$year %in% years.fit], use="pairwise.complete.obs"))
+  covs2 <- apply(oceanData.s2.scl[,,as.character(years.fit)], 1:2, function(x) cov(x, response$val[response$year %in% years.fit], use="pairwise.complete.obs"))
+  covs3 <- apply(oceanData.s3.scl[,,as.character(years.fit)], 1:2, function(x) cov(x, response$val[response$year %in% years.fit], use="pairwise.complete.obs"))
+  covs4 <- apply(oceanData.s4.scl[,,as.character(years.fit)], 1:2, function(x) cov(x, response$val[response$year %in% years.fit], use="pairwise.complete.obs"))
 
   #********************************************************************
   # Create the index (how similar is each year to the covariance map)
@@ -65,13 +65,13 @@ get_CMISST_index <- function(response, oceanData=oceanData_ERSST,
   coefs_cov<-NULL
   options(na.action="na.omit")
   for (tt in 1:dim(oceanData.s1.scl)[3])
-    coefs_cov<-rbind(coefs_cov, c(tryCatch(lm(as.vector(oceanData.s1.scl[,,tt]) ~ -1 + as.vector(covs1))$coef,error=function(e){NA}),
+    coefs_cov <- rbind(coefs_cov, c(tryCatch(lm(as.vector(oceanData.s1.scl[,,tt]) ~ -1 + as.vector(covs1))$coef,error=function(e){NA}),
                                   tryCatch(lm(as.vector(oceanData.s2.scl[,,tt]) ~ -1 + as.vector(covs2))$coef,error=function(e){NA}),
                                   tryCatch(lm(as.vector(oceanData.s3.scl[,,tt]) ~ -1 + as.vector(covs3))$coef,error=function(e){NA}),
                                   tryCatch(lm(as.vector(oceanData.s4.scl[,,tt]) ~ -1 + as.vector(covs4))$coef,error=function(e){NA})))
-  coefs_cov<-data.frame(coefs_cov)
-  coefs_cov$year<-years
-  index_cov<-merge(coefs_cov, response[response$year %in% years.fit,], all.x=TRUE)
+  coefs_cov <- data.frame(coefs_cov)
+  coefs_cov$year <- years
+  index_cov <- merge(coefs_cov, response[response$year %in% years.fit,], all.x=TRUE)
   colnames(index_cov)<-c("year","win.cov","spr.cov","sum.cov","aut.cov","val")
 
   # Returns index as a list
