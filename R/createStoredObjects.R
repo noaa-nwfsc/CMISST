@@ -10,7 +10,7 @@
 #********************************************************
 # get the land for plotting (wrap across antimeridian)
 #********************************************************
-land<-rnaturalearth::ne_countries(type='countries', scale = "large", returnclass = "sf")
+land <- rnaturalearth::ne_countries(type='countries', scale = "large", returnclass = "sf")
 amer <- land[land$region_un=='Americas',]
 # shift the Americas to a more Pacific centric worldview
 pacified_amer <- sf::st_shift_longitude(amer)
@@ -38,7 +38,7 @@ years=seq(1950, 2025, 1)
 months=seq(1,12,1)
 
 # Function defined in getOceanData.R
-oceanData_ERSST<-getOceanData(dataSet=dataSet,
+oceanData_ERSST <- getOceanData(dataSet=dataSet,
                         min.lon=min.lon, max.lon=max.lon,
                         min.lat=min.lat, max.lat=max.lat,
                         years = years, months = months)
@@ -69,7 +69,7 @@ max.lat=90
 years=seq(1980, 2024, 1)
 months=seq(1,12,1)
 
-oceanData_SSH<-getOceanData(dataSet=dataSet,
+oceanData_SSH <- getOceanData(dataSet=dataSet,
                             min.lon=min.lon, max.lon=max.lon,
                             min.lat=min.lat, max.lat=max.lat,
                             years = years, months = months)
