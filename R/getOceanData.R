@@ -3,7 +3,7 @@
 
 # To run this code, you will need to download the original data files
 # and store them in data/SST/ or data/SSH
-#  This includes teh monthly data as well as the long term mean
+#  This includes the monthly data as well as the long term mean
 
 # SST data are from ERSST (https://www.ncei.noaa.gov/pub/data/cmb/ersst/v5/netcdf/)
 # But I obtained them where they have been reposted in a slightly different format here:
@@ -40,7 +40,6 @@ getOceanData<-function(dataSet='ERSST',
   # open a (any) netCDF file to extract lats and longs
   if (dataSet == 'ERSST') {
     ncfname <- "data/SST/sst.mon.ltm.1991-2020.nc"
-    #ncfname <- "data/SST/sst.mon.ltm.1981-2010.nc"
     ncin <- nc_open(ncfname)
     lons <- ncvar_get(ncin,"lon")
     lats <- ncvar_get(ncin,"lat",verbose=F)
@@ -62,13 +61,13 @@ getOceanData<-function(dataSet='ERSST',
   #***************************************************************
   
   # Index the locations in the file
-  lon.index<-which(lons >= min.lon & lons < max.lon) 
-  lat.index<-which(lats > min.lat & lats < max.lat)
+  lon.index <- which(lons >= min.lon & lons < max.lon) 
+  lat.index <- which(lats > min.lat & lats < max.lat)
   lon.subset <- lons[lon.index]
   lat.subset <- lats[lat.index]
 
   # Loop over files, extract the anomaly data, and store them in a single array
-  returnData<-array(rep(x = NaN, nrow(year_mo) * length(lon.subset) * length(lat.subset)),
+  returnData <- array(rep(x = NaN, nrow(year_mo) * length(lon.subset) * length(lat.subset)),
                   dim = c(length(lon.subset), length(lat.subset), nrow(year_mo)),
                   dimnames = list(lon.subset, lat.subset, year_mo$label))
   
