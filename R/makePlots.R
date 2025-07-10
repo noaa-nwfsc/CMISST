@@ -25,9 +25,9 @@ makeCovarianceMap <- function(input.season = input.season, cmisst = cmisst) {
                     spr = "Spring",
                     sum = "Summer",
                     aut = "Autumn")
-  covMap<-cmisst[[season]]
-  lmt<-max(abs(covMap), na.rm=TRUE)
-  limits<-c(-lmt, lmt)
+  covMap <- cmisst[[season]]
+  lmt <- max(abs(covMap), na.rm=TRUE)
+  limits <- c(-lmt, lmt)
   extent <- cmisst[[6]] # min, max of lat, long
   
   gg <- ggplot() + ggtitle(myTitle) +
@@ -107,18 +107,18 @@ makeTimeSeriesPlot <- function(input.season = input.season, cmisst = cmisst,
   myTitle <- switch(input.season,
                     win = "Winter", spr = "Spring", sum = "Summer", aut = "Autumn")
   lm1 <- lm(index$val~index$ind)
-  preds<-predict(lm1, newdata = index, interval = "confidence")
-  preds<-reverse_scale(preds, attr(response.tmp$val.scl, "scaled:center"), attr(response.tmp$val.scl, "scaled:scale"))
+  preds <- predict(lm1, newdata = index, interval = "confidence")
+  preds <- reverse_scale(preds, attr(response.tmp$val.scl, "scaled:center"), attr(response.tmp$val.scl, "scaled:scale"))
   if (input.link == "log") preds <- exp(preds)
   if (input.link == "logit") preds <- boot::inv.logit(preds)
   # Use prediction interval for predicted points
-  preds_new<-predict(lm1, newdata = index, interval = "prediction")
-  preds_new<-reverse_scale(preds_new, attr(response.tmp$val.scl, "scaled:center"), attr(response.tmp$val.scl, "scaled:scale"))
+  preds_new <- predict(lm1, newdata = index, interval = "prediction")
+  preds_new <- reverse_scale(preds_new, attr(response.tmp$val.scl, "scaled:center"), attr(response.tmp$val.scl, "scaled:scale"))
   if (input.link == "log") preds_new <- exp(preds_new)
   if (input.link == "logit") preds_new <- boot::inv.logit(preds_new)
   # replace just the ones that were not used during fitting
-  #preds[index$year %in% input.years.pred,]<-preds_new[index$year %in% input.years.pred,]
-  preds[is.na(index$val),]<-preds_new[is.na(index$val),]
+  #preds[index$year %in% input.years.pred,] <- preds_new[index$year %in% input.years.pred,]
+  preds[is.na(index$val),] <- preds_new[is.na(index$val),]
   
   preds<-data.frame(preds)
   # unlag the year to show the plot in return year
