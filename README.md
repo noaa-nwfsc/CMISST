@@ -13,7 +13,7 @@ This repository is a scientific product and is not official communication of the
  
 To update the data files, you will need to download the source data files, store them in the data folder (use /SST and /SSH subfolders for SST and SSH data), and run the code in createStoredObjects.R
 
-Response data all come from Columbia Basin Research's Data Access in Real Time (DART) website. Adult counts were obtained here: https://www.cbr.washington.edu/dart/query/adult_daily and Smot to Adult Survival (SAR) data were obtained here: https://www.cbr.washington.edu/dart/query/pit_sar_esu. The code does not enforce this, but it's best to use a log link for counts and a logit link for SARs.
+Response data all come from Columbia Basin Research's Data Access in Real Time (DART) website. Adult counts were obtained here: https://www.cbr.washington.edu/dart/query/adult_daily and Smolt to Adult Survival (SAR) data were obtained here: https://www.cbr.washington.edu/dart/query/pit_sar_esu. The code does not enforce this, but it's best to use a log link for counts and a logit link for SARs.
 
 SST data are from ERSST (https://www.ncei.noaa.gov/pub/data/cmb/ersst/v5/netcdf/).
 But I obtained them where they have been reposted in a slightly different format here:
@@ -23,7 +23,7 @@ ERSST is a 2x2 degree gloabal dataset
 
 Reference: Huang et al, 2017: Extended Reconstructed Sea Surface Temperatures Version 5 (ERSSTv5): Upgrades, Validations, and Intercomparisons. Journal of Climate, https://doi.org/10.1175/JCLI-D-16-0836.1
 
-Use acknowledgment: The NOAA Extended Reconstructed Sea Surface Temperature (ERSST) data are provided by the NOAA National Centers for Environmental Information(NCEI)
+Use acknowledgment: The NOAA Extended Reconstructed Sea Surface Temperature (ERSST) data are provided by the NOAA National Centers for Environmental Information (NCEI)
 
 SSH Data from: https://psl.noaa.gov/data/gridded/data.godas.html and is 0.33x1 degree
 
