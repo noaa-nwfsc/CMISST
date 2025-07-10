@@ -18,9 +18,11 @@ updateCMISST <- function() {
   response.tmp <- response
   # Lag the response variable, so it's also in ocean entry years
   response.tmp$year <- response.tmp$year - as.numeric(input.lag)
+  
   # refine to just the years asked for and just the requested response variable
   response.tmp <- response.tmp[response.tmp$year %in% years.all, c('year', input.stock)]
   colnames(response.tmp) <- c('year', 'val')
+  
   # sometimes the response starts after the input.years, so limit the years in the ocean data 
   years.all <- years.all[years.all >= min(response.tmp$year)]
   
@@ -49,6 +51,7 @@ updateCMISST <- function() {
                     months = months)
     return(append(cmisst, loocv))
   } else return(cmisst)
+  
   # Returns index as a list
   #  cmisst[[1]] contains 7 columns (as one list item): year, 4 seasonal indices,
   #              the scaled response, and the original response
