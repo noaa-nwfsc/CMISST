@@ -1,4 +1,4 @@
-# This will create the CMISST index, given a response variable time series
+# This is the main function that creates the CMISST index, given a response variable time series
 #  and a user-specified spatial ocean variable
 
 get_CMISST_index <- function(response, oceanData=oceanData_ERSST,
