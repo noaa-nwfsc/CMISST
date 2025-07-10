@@ -11,26 +11,32 @@ library(doBy)
 library(dplyr)
 
 #************************************
-#   ---- Load any data files ----
+#   ---- Load data files & functions ----
 #************************************
 
 # land geo file for plotting the map
 load("data/land.Rdata")
+
 # Bonneville Dam Counts
 load('data/responseData.RData')
+
 # Snake Sp/Su Chinook SAR
 load('data/responseDataSnake.RData')
 response <- merge(response, Snake_SAR, all = TRUE)
 response <- response %>% rename(Snake_SAR = meanSAR)
+
 # ERSST data
 load('data/oceanSSTData.RData')
 
 # define the updateCMISST() function
 source('R/updateCMISST.R')
+
 # calculate CMISST index, used by updateCMISST function
 source('R/get_index.R')
+
 # Define LOO_CV(), used by updateCMISST function
 source('R/crossValidation.R')
+
 # Define the plotting functions
 source("R/makePlots.R")
 
