@@ -119,7 +119,7 @@ cmisst <- updateCMISST()
 #     ---- Plot  Results ----
 #************************************
 
-# Input: What map to plot
+# Input: What map to plot (spr, sum, aut, win)
 input.season = "spr"
 
 # Make the covariance map

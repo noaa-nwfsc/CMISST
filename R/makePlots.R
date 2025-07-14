@@ -11,7 +11,7 @@ reverse_scale <- function(x, center = NULL, scale = NULL) {
   x
 }
 
-
+#-------------------------------------------------------------------------------
 makeCovarianceMap <- function(input.season = input.season, cmisst = cmisst) {
   # Covariance Map
   myPalette <- colorRampPalette(rev(brewer.pal(11, "Spectral")), space="Lab")
@@ -31,7 +31,7 @@ makeCovarianceMap <- function(input.season = input.season, cmisst = cmisst) {
   extent <- cmisst[[6]] # min, max of lat, long
   
   gg <- ggplot() + ggtitle(myTitle) +
-    geom_raster(data = melt(covMap), aes(x = Var1, y = Var2, fill=value)) +
+    geom_raster(data = melt(covMap), aes(x = Var1, y = Var2, fill=value), na.rm = TRUE) +
     geom_sf(data=land, color="black", fill="grey", linewidth=0.25) +
     xlim(extent[3], extent[4]) + ylim(extent[1], extent[2]) +
     scale_fill_gradientn(colours = myPalette(100),limits=limits,name="Covariance", na.value = "white") +
@@ -41,6 +41,7 @@ makeCovarianceMap <- function(input.season = input.season, cmisst = cmisst) {
 }
 
 
+#-------------------------------------------------------------------------------
 makeBiplot <- function(input.season = input.season, cmisst = cmisst) {
   # Biplot with response
   index <- cmisst[[1]]
@@ -60,16 +61,22 @@ makeBiplot <- function(input.season = input.season, cmisst = cmisst) {
   lm1 <- lm(index$val~index$ind)
   abline(lm1)
   text(bquote(~ R^2 == .(round(summary(lm1)$adj.r.squared, 2))),
-       x = par("usr")[1]*0.8, y=par("usr")[4]*0.80, cex=1.6, col="blue")
+       x = (par("usr")[1] + (par("usr")[2] - par("usr")[1])*0.1),
+       y = (par("usr")[3] + (par("usr")[4] - par("usr")[3])*0.90),
+       cex=1.6, col="blue", adj = 0)
   if (input.loocv) {
     mae <- cmisst[[7]]
     colnames(mae)[colnames(mae)=="mae.mean"] <- "mae"
     text(paste("MAE =", round(mean(abs(mae[mae$season==input.season,"mae"])), 2)),
-         x = par("usr")[1]*0.75, y=par("usr")[4]*0.60, cex=1.6, col="blue")
+         x = (par("usr")[1] + (par("usr")[2] - par("usr")[1])*0.1),
+         y = (par("usr")[3] + (par("usr")[4] - par("usr")[3])*0.80),
+         cex=1.6, col="blue", adj = 0)
   }
 }
 
-makeSSTPlot <- function(month = 4, year = 1980, oceanData = oceanData_ERSST, sstRange = c(-1,1)) {
+#-------------------------------------------------------------------------------
+makeSSTPlot <- function(month = 4, year = 1980,
+                        oceanData = oceanData_ERSST, sstRange = c(-1,1)) {
   # Covariance Map
   myPalette <- colorRampPalette(rev(brewer.pal(11, "Spectral")), space="Lab")
   
@@ -85,6 +92,9 @@ makeSSTPlot <- function(month = 4, year = 1980, oceanData = oceanData_ERSST, sst
     labs(x = "Longitude", y = "Latitude")
   gg
 }
+
+
+#-------------------------------------------------------------------------------
 makeTimeSeriesPlot <- function(input.season = input.season, cmisst = cmisst,
                                ylab="", yaxis_scaler=1) {
   # Time series plot in normal space
@@ -126,15 +136,23 @@ makeTimeSeriesPlot <- function(input.season = input.season, cmisst = cmisst,
   preds$year_return <- index$year_return
 
   ggplot() +
-    geom_line(data = index, aes(x=year_return, y=response/yaxis_scaler)) +
-    geom_point(data = index, aes(x=year_return, y=response/yaxis_scaler)) +
+    geom_line(data = index, aes(x=year_return, y=response/yaxis_scaler, color = "a"), na.rm = TRUE) +
+    geom_point(data = index, aes(x=year_return, y=response/yaxis_scaler, color = "a"), na.rm = TRUE) +
     theme_classic() +
     ylab(label = ylab) + xlab("Response Year") +
-    geom_line(data=preds, aes(x=year_return, y=fit/yaxis_scaler), color="deepskyblue2", linewidth=1.3) +
-    geom_point(data=preds, aes(x=year_return, y=fit/yaxis_scaler), color="deepskyblue2") +
-    geom_ribbon(data=preds, aes(x=year_return, ymin = lwr/yaxis_scaler, ymax = upr/yaxis_scaler), fill = "deepskyblue2", alpha = 0.2)
+    geom_line(data=preds, aes(x=year_return, y=fit/yaxis_scaler, color="b"),
+              linewidth=1.3, na.rm = TRUE) +
+    geom_point(data=preds, aes(x=year_return, y=fit/yaxis_scaler, color="b"),
+               na.rm = TRUE) +
+    geom_ribbon(data=preds, aes(x=year_return, ymin = lwr/yaxis_scaler, ymax = upr/yaxis_scaler,
+                                fill = "deepskyblue2"), alpha = 0.2) +
+    scale_fill_identity(name = NULL, guide = 'legend', labels = c('95% PI')) +
+    scale_colour_manual(name = NULL, 
+                        values =c('a'='black','b'='deepskyblue2'), labels = c('Data','Model'))
+  
 }
 
+#-------------------------------------------------------------------------------
 makeIndexPlot <- function(cmisst = cmisst) {
   # Output: Index time series
   index <- cmisst[[1]]
@@ -150,6 +168,7 @@ makeIndexPlot <- function(cmisst = cmisst) {
 }
 
 
+#-------------------------------------------------------------------------------
 makeLOOplot <- function(cmisst = cmisst, season = "spr") {
   # Output: Observed and predicted time series from the LOO
   index <- cmisst[[1]] # This gets us the whole time series
@@ -162,6 +181,7 @@ makeLOOplot <- function(cmisst = cmisst, season = "spr") {
        x = par("usr")[1]+9, y=par("usr")[4]*0.80, cex=1.0, col="deepskyblue2")
 }
 
+#-------------------------------------------------------------------------------
 makeTable <- function(cmisst = cmisst) {
   # Time series plot in normal space
   response.tmp <- response
@@ -182,3 +202,5 @@ makeTable <- function(cmisst = cmisst) {
   out$response <- index$response
   out
 }
+
+#-------------------------------------------------------------------------------
