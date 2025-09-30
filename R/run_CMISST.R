@@ -47,7 +47,7 @@ source("R/makePlots.R")
 #************************************
 input.spatialData = "ERSST"
 if (input.spatialData == "ERSST") oceanData <- oceanData_ERSST
-#if (input.spatialData == "SSH") oceanData <- oceanData_SSH
+if (input.spatialData == "SSH") oceanData <- oceanData_SSH
 
 # Input: Choose a stock 
 input.stock = "Sp_Chinook"
@@ -63,7 +63,8 @@ if (input.stock == "Snake_SAR") {
 }
 #input.link = "None"
 
-# Input: lag response? 
+# Input: lag response?
+#   This accounts for the lag between salmon ocean entry and adult returns
 if (input.stock == "Snake_SAR") {
   input.lag = 0 # SAR data are already based on year of ocean entry
 } else {
@@ -79,7 +80,7 @@ input.long = c(158, 246)
 # Ocean Years 
 #  For salmon, this would be the year of ocean entry
 #  Years after the most recent year in the response will be predicted
-#  if the SST / SSH data are available (2025 is not fully available yet)
+#  if the SST / SSH data are available
 input.years = c(1980, 2024)
 
 months = seq(1,12,1)
@@ -97,7 +98,7 @@ input.loocv = TRUE
 #   time series length will remove every data point (one at a time)
 loocvYears = 10 # the most recent X years to include in the LOO CV
 
-# Do we want each individual season and year's prediction output (TRUE),
+# Do you want each individual season and year's prediction output (TRUE),
 #   or a mean and se per season (FALSE)
 pred_out = TRUE
 
@@ -121,6 +122,9 @@ cmisst <- updateCMISST()
 
 # Input: What map to plot (spr, sum, aut, win)
 input.season = "spr"
+# input.season = "sum"
+# input.season = "aut"
+# input.season = "win"
 
 # Make the covariance map
 makeCovarianceMap(input.season = input.season, cmisst = cmisst)
@@ -136,7 +140,11 @@ makeTimeSeriesPlot(input.season = input.season, cmisst = cmisst,
 makeIndexPlot(cmisst = cmisst)
   
 # Output: Observed and predicted time series from the LOO
-makeLOOplot(cmisst = cmisst, season = input.season)
+if (pred_out == TRUE & input.loocv == TRUE)
+  makeLOOplot(cmisst = cmisst, season = input.season)
 
 # Print the sesonal indices and the scaled response variable
 makeTable(cmisst = cmisst)
+
+# Print the Mean Absolute Errors
+if (input.loocv == TRUE) cmisst[[7]]

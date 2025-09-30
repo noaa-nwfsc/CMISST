@@ -38,11 +38,16 @@ years=seq(1950, 2025, 1)
 months=seq(1,12,1)
 
 # Function defined in getOceanData.R
-oceanData_ERSST <- getOceanData(dataSet=dataSet,
-                        min.lon=min.lon, max.lon=max.lon,
-                        min.lat=min.lat, max.lat=max.lat,
-                        years = years, months = months)
-save(x = "oceanData_ERSST", file = 'data/oceanSSTData.RData')
+if(exists('data/SST/sst.mon.ltm.1991-2020.nc')) {
+  oceanData_ERSST <- getOceanData(dataSet=dataSet,
+                                  min.lon=min.lon, max.lon=max.lon,
+                                  min.lat=min.lat, max.lat=max.lat,
+                                  years = years, months = months)
+  save(x = "oceanData_ERSST", file = 'data/oceanSSTData.RData')
+} else {
+  cat('Please download the SST data into data/SST/.
+        Required files include sst.mon.ltm.1991-2020.nc and sst.mnmean.nc')
+}
 #load('data/oceanSSTData.RData')
 
 
@@ -69,11 +74,17 @@ max.lat=90
 years=seq(1980, 2024, 1)
 months=seq(1,12,1)
 
-oceanData_SSH <- getOceanData(dataSet=dataSet,
-                            min.lon=min.lon, max.lon=max.lon,
-                            min.lat=min.lat, max.lat=max.lat,
-                            years = years, months = months)
-save(x = "oceanData_SSH", file = 'data/oceanSSHData.RData')
+if(exists('data/SSH/sshg.mon.ltm.1991-2020.nc')) {
+  oceanData_SSH <- getOceanData(dataSet=dataSet,
+                                min.lon=min.lon, max.lon=max.lon,
+                                min.lat=min.lat, max.lat=max.lat,
+                                years = years, months = months)
+  save(x = "oceanData_SSH", file = 'data/oceanSSHData.RData')
+} else {
+  cat('Please download the SSH data into data/SSH/.
+        Required files include sshg.mon.ltm.1991-2020.nc and all sshg.YYYY.nc files')
+}
+
 #load('data/oceanSSHData.RData')
 
 
