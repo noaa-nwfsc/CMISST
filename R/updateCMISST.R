@@ -49,7 +49,7 @@ updateCMISST <- function() {
                     min.lat = min.lat, max.lat = max.lat,
                     years = years.fit,
                     months = months)
-    return(append(cmisst, loocv))
+    return(append(cmisst, list(loocv)))
   } else return(cmisst)
   
   # Returns index as a list

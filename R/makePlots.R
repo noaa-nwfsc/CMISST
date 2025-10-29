@@ -65,9 +65,11 @@ makeBiplot <- function(input.season = input.season, cmisst = cmisst) {
        y = (par("usr")[3] + (par("usr")[4] - par("usr")[3])*0.90),
        cex=1.6, col="blue", adj = 0)
   if (input.loocv) {
-    mae <- cmisst[[7]]
-    colnames(mae)[colnames(mae)=="mae.mean"] <- "mae"
-    text(paste("MAE =", round(mean(abs(mae[mae$season==input.season,"mae"])), 2)),
+    mae <- cmisst[[7]] %>%
+      group_by(model,season) %>%
+      summarise(mae = mae_func(pred, response), .groups = 'keep') %>%
+      as.data.frame()
+    text(paste("MAE =", round(mean(abs(mae[mae$model=="cmisst" & mae$season==input.season,"mae"])), 2)),
          x = (par("usr")[1] + (par("usr")[2] - par("usr")[1])*0.1),
          y = (par("usr")[3] + (par("usr")[4] - par("usr")[3])*0.80),
          cex=1.6, col="blue", adj = 0)
@@ -176,8 +178,11 @@ makeLOOplot <- function(cmisst = cmisst, season = "spr") {
   abline(0,0, lty=2)
   index <- cmisst[[7]] # this is just the loo results
   index2<-index[index$season==season & index$model=="cmisst",]
+  index3 <- index2 %>%
+    summarise(mae = mae_func(pred, response)) %>%
+    as.data.frame()
   lines(index2$year, index2$pred, lwd=3, col="deepskyblue2")
-  text(labels = paste("LOO MAE CMISST =", round(mean(abs(index2$mae)),2)),
+  text(labels = paste("LOO MAE CMISST =", round(index3$mae,2)),
        x = par("usr")[1]+9, y=par("usr")[4]*0.80, cex=1.0, col="deepskyblue2")
 }
 

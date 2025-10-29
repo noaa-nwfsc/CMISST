@@ -9,6 +9,7 @@ library(ggplot2)
 library(RColorBrewer)
 library(doBy)
 library(dplyr)
+library(hydroGOF)
 
 #************************************
 #   ---- Load data files & functions ----
@@ -96,12 +97,15 @@ input.loocv = TRUE
 #   emulating a forecasting scenario.  How many years should be included?
 #   E.g., 5 will only test the 5 most recent years, and using the full
 #   time series length will remove every data point (one at a time)
-loocvYears = 10 # the most recent X years to include in the LOO CV
+loocvYears = 43 # the most recent X years to include in the LOO CV
 
 # Do you want each individual season and year's prediction output (TRUE),
 #   or a mean and se per season (FALSE)
 pred_out = TRUE
 
+# Calculate CV metrics
+mae_func <- function(pred, response) return(mean(abs(pred - response)))
+rmse_func <- function(pred, response) return(sqrt(mean((pred - response)^2)))
 
 
 
@@ -139,12 +143,24 @@ makeTimeSeriesPlot(input.season = input.season, cmisst = cmisst,
 # Output: Index time series
 makeIndexPlot(cmisst = cmisst)
   
-# Output: Observed and predicted time series from the LOO
-if (pred_out == TRUE & input.loocv == TRUE)
-  makeLOOplot(cmisst = cmisst, season = input.season)
-
-# Print the sesonal indices and the scaled response variable
+# Print the seasonal indices and the scaled response variable
 makeTable(cmisst = cmisst)
+
+# Calculate CV metrics
+if (input.loocv == TRUE) {
+  print(
+    cmisst[[7]] %>%
+      group_by(model,season) %>%
+      summarise(mae = mae_func(pred, response),
+                rmse = rmse_func(pred, response),
+                kge = hydroGOF::KGE(pred, response, method = "2021"), .groups = 'keep')
+  )
+}
+
+# Output: Observed and predicted time series from the LOO
+if (input.loocv == TRUE) {
+  makeLOOplot(cmisst = cmisst, season = input.season)
+}
 
 # Print the Mean Absolute Errors
 if (input.loocv == TRUE) cmisst[[7]]

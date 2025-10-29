@@ -44,19 +44,13 @@ LOO_CV <- function(response = response,
       index.pred$var <- index.pred[,paste0(season,".cov")]
       mdl <- lm(val~var, data=index.fit)
       pred <- predict(mdl, newdata = index.pred)
-      #cov_mae <- sqrt(mean((pred - index.pred$val)^2)) # This is RMSEP
-      #cov_mae <- mean(abs(pred - index.pred$val)) # This is MAE
-      cov_mae <- mean(abs(pred - response$val.scl[response$year == this_year])) # This is MAE
       # Assign it to the data.frame
       mae <- rbind(mae, data.frame(model="cmisst", season=season, year=this_year,
-                                     response=response$val.scl[response$year == this_year], pred=pred,
-                                     mae=cov_mae, stringsAsFactors = FALSE))
+                                   response=response$val.scl[response$year == this_year],
+                                   pred=pred, stringsAsFactors = FALSE))
     } # End looping over season
   } # End looping over years
   
-  se <- function(x) { return(sd(x)/sqrt(length(x))) }
   mae$season <- factor(mae$season, levels = c("win","spr","sum","aut"))
-  # The following line prevents outputting all the individual predictions:
-  if(exists("pred_out")) if (!pred_out) mae <- summaryBy(mae ~ model+season, data = mae, FUN = c(mean, se))
-  return(list(mae))
+  return(mae)
 }
