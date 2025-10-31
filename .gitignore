@@ -2,3 +2,9 @@
 .Rhistory
 .RData
 .Ruserdata
+
+# for Macs
+.DS_Store
+
+# For the large SSH file
+data/oceanSSHData.RData
