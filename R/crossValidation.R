@@ -36,7 +36,13 @@ LOO_CV <- function(response = response,
     index.fit <- index_cov[index_cov$year %in% years.fit,]
     index.pred <- index_cov[index_cov$year %in% years.pred,]
 
-    # Calculate MAE
+    # This is for the manuscript
+    if (includePDO) {
+      index_other<-merge(otherIndicators, response, all.x=TRUE)
+      otherIndicators.fit<-index_other[index_other$year %in% years.fit,]
+      otherIndicators.pred<-index_other[index_other$year %in% years.pred,]
+    }
+    
     # Need to loop over seasons
     for(season in c("win","spr","sum","aut")) {
       
@@ -48,6 +54,42 @@ LOO_CV <- function(response = response,
       mae <- rbind(mae, data.frame(model="cmisst", season=season, year=this_year,
                                    response=response$val.scl[response$year == this_year],
                                    pred=pred, stringsAsFactors = FALSE))
+      
+      if (includePDO) {
+        # Optionally, include PDO
+        otherIndicators.fit$var <- otherIndicators.fit[,paste0("pdo.", season)]
+        otherIndicators.pred$var <- otherIndicators.pred[,paste0("pdo.", season)]
+        mdl<-lm(val.scl~var, data=otherIndicators.fit)
+        pred<-predict(mdl, newdata = otherIndicators.pred)
+        mae<-rbind(mae, data.frame(model="pdo", season=season, year=this_year,
+                                   response=otherIndicators.pred$val.scl, pred=pred,
+                                   stringsAsFactors = FALSE))
+        # NPGO
+        otherIndicators.fit$var <- otherIndicators.fit[,paste0("npgo.", season)]
+        otherIndicators.pred$var <- otherIndicators.pred[,paste0("npgo.", season)]
+        mdl<-lm(val.scl~var, data=otherIndicators.fit)
+        pred<-predict(mdl, newdata = otherIndicators.pred)
+        mae<-rbind(mae, data.frame(model="npgo", season=season, year=this_year,
+                                   response=otherIndicators.pred$val.scl, pred=pred,
+                                   stringsAsFactors = FALSE))
+        # # ONI
+        otherIndicators.fit$var <- otherIndicators.fit[,paste0("oni.", season)]
+        otherIndicators.pred$var <- otherIndicators.pred[,paste0("oni.", season)]
+        mdl<-lm(val.scl~var, data=otherIndicators.fit)
+        pred<-predict(mdl, newdata = otherIndicators.pred)
+        mae<-rbind(mae, data.frame(model="oni", season=season, year=this_year,
+                                   response=otherIndicators.pred$val.scl, pred=pred,
+                                   stringsAsFactors = FALSE))
+        # # SSTarc
+        otherIndicators.fit$var <- otherIndicators.fit[,paste0("arc.", season)]
+        otherIndicators.pred$var <- otherIndicators.pred[,paste0("arc.", season)]
+        mdl<-lm(val.scl~var, data=otherIndicators.fit)
+        pred<-predict(mdl, newdata = otherIndicators.pred)
+        mae<-rbind(mae, data.frame(model="SSTarc", season=season, year=this_year,
+                                   response=otherIndicators.pred$val.scl, pred=pred,
+                                   stringsAsFactors = FALSE))
+      }
+      
     } # End looping over season
   } # End looping over years
   

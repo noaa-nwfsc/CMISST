@@ -29,6 +29,18 @@ response <- response %>% rename(Snake_SAR = meanSAR)
 # ERSST data
 load('data/oceanSSTData.RData')
 
+# SSH data
+if (file.exists('data/oceanSSHData.RData')) {
+  load(file = 'data/oceanSSHData.RData')
+} else {
+  stop("Sea Surface Height data is not loaded.
+        Please run lines 56 through 86 in R/createStoredObjects.R
+        to create the data object, and retry running this file.")
+}
+
+# other Indicators (PDO, NPGO, etc)
+load('data/otherIndicators.RData')
+
 # define the updateCMISST() function
 source('R/updateCMISST.R')
 
@@ -86,12 +98,11 @@ input.years = c(1980, 2024)
 
 months = seq(1,12,1)
 
-
 #************************************
 #  ---- Leave One Out Cross-validation ----
 #************************************
 # Calculate Mean Absolute Error from a LOO CV? 
-input.loocv = TRUE
+input.loocv = FALSE
 
 # The script will leave only the most recent years out,
 #   emulating a forecasting scenario.  How many years should be included?
@@ -99,11 +110,10 @@ input.loocv = TRUE
 #   time series length will remove every data point (one at a time)
 loocvYears = 43 # the most recent X years to include in the LOO CV
 
-# Do you want each individual season and year's prediction output (TRUE),
-#   or a mean and se per season (FALSE)
-pred_out = TRUE
+# This is for loocv for the manuscript
+includePDO = FALSE
 
-# Calculate CV metrics
+# Functions to calculate CV metrics
 mae_func <- function(pred, response) return(mean(abs(pred - response)))
 rmse_func <- function(pred, response) return(sqrt(mean((pred - response)^2)))
 

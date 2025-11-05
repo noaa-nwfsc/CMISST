@@ -34,6 +34,10 @@ updateCMISST <- function() {
   # Which years are being fit to?
   years.fit <- years.all[years.all %in% response.tmp$year[!is.na(response.tmp$val.scl)]]
   
+  # Use the correct data
+  if (input.spatialData == "ERSST") oceanData <- oceanData_ERSST
+  if (input.spatialData == "SSH") oceanData <- oceanData_SSH
+  
   # Calculate the CMISST index
   cmisst <- get_CMISST_index(response = response.tmp[,c("year","val.scl")],
                              oceanData = oceanData,
@@ -44,6 +48,7 @@ updateCMISST <- function() {
 
   if (input.loocv) {
     loocv <- LOO_CV(response = response.tmp[,c("year","val.scl")],
+                    includePDO = includePDO,
                     oceanData = oceanData, loocvYears = loocvYears,
                     min.lon = min.lon, max.lon = max.lon,
                     min.lat = min.lat, max.lat = max.lat,
