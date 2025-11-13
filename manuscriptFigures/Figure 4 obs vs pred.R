@@ -12,7 +12,8 @@ looResults$index <- factor(looResults$index, levels = c("CMISST","CMISSH","PDO",
 
 # Make the figure---------------------------------------------------------------
 
-cbbPalette <- c("#56B4E9", "#009E73", "#E69F00", "#F0E442", "#0072B2", "#CC79A7")
+#cbbPalette <- c("#56B4E9", "#009E73", "#E69F00", "#F0E442", "#0072B2", "#CC79A7")
+cols <- c("#F8766D", "#00BA38", "#619CFF") # ggplot's defaults
 pretty_labels <- c("Sp_Chinook" = "Spring Chinook",
                    "Fa_Chinook" = "Fall Chinook",
                    "Steelhead" = "Steelhead")
@@ -23,9 +24,9 @@ looSummary <- looResults %>%
            (stock=="Fa_Chinook" & lag==3 & season=="aut") |
            (stock=="Steelhead" & lag==3 & season=="aut"))
 
-gg_obs_pred <- ggplot(data = looSummary, aes(x = response, y = pred, color = index)) +
+gg_obs_pred <- ggplot(data = looSummary, aes(x = response, y = pred, color = stock)) +
   geom_point(cex=0.7) +
-  scale_colour_manual(values=cbbPalette) +
+  scale_colour_manual(values=cols) +
   theme_bw() +
   labs(y="Leave One Out Predictions", x="Observed") +
   facet_grid(cols = vars(stock), rows = vars(index),
@@ -39,5 +40,5 @@ gg_obs_pred <- ggplot(data = looSummary, aes(x = response, y = pred, color = ind
   )
 gg_obs_pred
 
-ggsave(filename = "manuscriptFigures/Fig X obs vs pred.tiff",
+ggsave(filename = "manuscriptFigures/Fig 4 obs vs pred.tiff",
        plot = gg_obs_pred, width = 90, height = 160, units = "mm", dpi = 500)

@@ -1,5 +1,6 @@
 # Create Figure 1, the basic covariance maps
 source('R/run_CMISST.R') # This sets everything up, then we can make changes
+library(patchwork)
 stockList <- c("Sp_Chinook","Fa_Chinook","Steelhead")
 response.orig <- response
 input.years= c(1980, 2022)
@@ -9,7 +10,7 @@ for (input.stock in c("Sp_Chinook", "Fa_Chinook", "Steelhead")) {
 
   response<-response.orig[,c("year",input.stock)]
   cmisst <- updateCMISST()
-  myPalette <- colorRampPalette(rev(brewer.pal(11, "Spectral")), space="Lab")
+  myPalette <- colorRampPalette(rev(brewer.pal(11, "RdBu")), space="Lab")
   season <- switch(input.season, win = 2, spr = 3, sum = 4, aut = 5)
   myTitle <- switch(input.season, win = "Winter", spr = "Spring", sum = "Summer", aut = "Autumn")
   covMap<-cmisst[[season]]
@@ -21,9 +22,9 @@ for (input.stock in c("Sp_Chinook", "Fa_Chinook", "Steelhead")) {
     geom_raster(data = melt(covMap), aes(x = Var1, y = Var2, fill=value)) +
     geom_sf(data=land, color="black", fill="grey", linewidth=0.25) +
     xlim(extent[3], extent[4]) + ylim(extent[1], extent[2]) +
-    scale_fill_gradientn(colours = myPalette(100),limits=limits,name="Covariance", na.value = "white") +
+    scale_fill_gradientn(colours = myPalette(100),limits=limits, name="Covariance", na.value = "white") +
     theme_classic() + theme(panel.border = element_rect(colour = "grey", fill=NA)) +
-    #theme(legend.position = "none") +
+    theme(legend.position = "right") +
     labs(x = "Longitude", y = "Latitude")
   assign(paste('ggCM_', input.stock, sep=''), gg)
 }

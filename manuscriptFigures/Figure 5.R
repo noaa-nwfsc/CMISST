@@ -71,7 +71,8 @@ durationSummary <- durationResults %>%
             kge = hydroGOF::KGE(pred, response, method = "2021"), .groups = 'keep')
 
 extent <- cmisst[[6]] # min, max of lat, long
-myPalette <- colorRampPalette(rev(brewer.pal(11, "Spectral")), space="Lab")
+myPalette <- colorRampPalette(rev(brewer.pal(11, "RdBu")), space="Lab")
+seasonPalette <- c("#56B4E9", "#009E73", "#E69F00", "#F0E442")
 
 # Make the inset maps
 for (input.stock in stockList) {
@@ -107,16 +108,13 @@ for (input.stock in stockList) {
             plot.margin = unit(c(0,0,0,0), "cm"))
     assign(paste("gg", startYear, sep = ""), gg)
   }
-}
 
-# Make the line plots
-for (input.stock in stockList) {
-    gg <- ggplot() + ggtitle(switch(input.stock, Sp_Chinook="Spring Chinook", Fa_Chinook="Fall Chinook", Steelhead="Steelhead")) +
-    geom_line(data=durationSummary[durationSummary$stock == input.stock,], aes(x=startYearData, y=rmse, col=season)) +
-    ylab("Root Mean Squared Error\n") + 
-    theme_classic() +
-    scale_fill_discrete(name = "", labels = c("Winter","Spring","Summer","Autumn")) +
-    scale_color_discrete(name = "", labels = c("Winter","Spring","Summer","Autumn"))
+  # Make the line plots
+  gg <- ggplot() + ggtitle(switch(input.stock, Sp_Chinook="Spring Chinook", Fa_Chinook="Fall Chinook", Steelhead="Steelhead")) +
+  geom_line(data=durationSummary[durationSummary$stock == input.stock,], aes(x=startYearData, y=rmse, col=season)) +
+  ylab("Root Mean Squared Error\n") + 
+  theme_classic() +
+  scale_color_discrete(name = "", labels = c("Winter","Spring","Summer","Autumn"), palette = seasonPalette)
   if (input.stock == stockList[1]) gg <- gg +
     theme(axis.title.x = element_text(color = "white"),
           axis.title.y = element_text(color = "white")) +
@@ -145,6 +143,6 @@ gg_final <- gg_inset_sp + gg_inset_fa + gg_inset_st + guide_area() +
   theme(legend.direction = 'horizontal', legend.text = element_text(size=7))
 gg_final
 
-ggsave(filename = "manuscriptFigures/Fig 4 duration.tiff",
+ggsave(filename = "manuscriptFigures/Fig 5 duration.tiff",
        plot = gg_final, width = 90, height = 160, units = "mm", dpi = 500)
 

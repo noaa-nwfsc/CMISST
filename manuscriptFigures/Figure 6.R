@@ -90,6 +90,7 @@ spatialSummary <- spatialResults %>%
             kge = hydroGOF::KGE(pred, response, method = "2021"), .groups = 'keep')
 
 myPalette <- colorRampPalette(rev(brewer.pal(11, "Spectral")), space="Lab")
+seasonPalette <- c("#56B4E9", "#009E73", "#E69F00", "#F0E442")
 pretty_labels <- c("Sp_Chinook" = "Spring Chinook",
                    "Fa_Chinook" = "Fall Chinook",
                    "Steelhead" = "Steelhead")
@@ -98,8 +99,7 @@ pretty_labels <- c("Sp_Chinook" = "Spring Chinook",
 gg1 <- ggplot() + theme_classic() +
   geom_line(data=spatialSummary[spatialSummary$startLong == input.long.orig[1],], aes(x=startLat, y=rmse, col=season)) +
   ylab("Root Mean Squared Error") + xlab("Start Latitude")  +
-  scale_fill_discrete(name = "Season", labels = c("Winter","Spring","Summer","Autumn")) +
-  scale_color_discrete(name = "Season", labels = c("Winter","Spring","Summer","Autumn")) +
+  scale_color_discrete(name = "Season", labels = c("Winter","Spring","Summer","Autumn"), palette = seasonPalette) +
   facet_grid(cols = vars(stock),
              scales = "free_y",
              labeller = labeller(stock = pretty_labels), ) +
@@ -113,7 +113,7 @@ gg1
 gg2 <- ggplot() + theme_classic() +
   geom_line(data=spatialSummary[spatialSummary$startLat == input.lat.orig[1],], aes(x=startLong, y=rmse, col=season)) +
   ylab("Root Mean Squared Error") + xlab("Start Longitude")  +
-  scale_color_discrete(name = "Season", labels = c("Winter","Spring","Summer","Autumn")) +
+  scale_color_discrete(name = "Season", labels = c("Winter","Spring","Summer","Autumn"), palette = seasonPalette) +
   facet_grid(cols = vars(stock),
              scales = "free_y",
              labeller = labeller(stock = pretty_labels)) +
@@ -130,5 +130,5 @@ gg_spatial <- gg1 + gg2 +
   plot_layout(ncol = 1, guides = "collect", axes = "collect_y") 
 gg_spatial
 
-ggsave(filename = "manuscriptFigures/Fig 5 latlong.tiff",
+ggsave(filename = "manuscriptFigures/Fig 6 latlong.tiff",
        plot = gg_spatial, width = 190, height = 100, units = "mm", dpi = 500)

@@ -91,5 +91,23 @@ gg_mae <- ggplot(data = looResults) +
 #facet_wrap(vars(stock), nrow = 3)
 gg_mae
 
+# This version uts the indices on the x axis
+gg_mae <- ggplot(data = looResults) +
+  geom_point(position=position_dodge(width = dw),
+             aes(x = index, y = rmse, group=season, col=season, pch=lag), cex=3) +
+  scale_colour_manual(values=cbbPalette) +
+  #scale_x_discrete(labels = pretty_x_axis) +
+  theme_classic() +
+  labs(y="Root Mean Squared Error", x=NULL) +
+  facet_rep_wrap(~stock, nrow = 3, strip.position = "left", scales = 'free_x',
+                 labeller = labeller(stock=pretty_labels), repeat.tick.labels='top') +
+  theme(strip.placement = "outside", strip.background = element_blank(),
+        axis.text.x = element_text(size=10), strip.text = element_text(size=12),
+        axis.title.y = element_text(size=14))
+#facet_wrap(vars(stock), nrow = 3)
+gg_mae
+
+
+
 ggsave(filename = "manuscriptFigures/Fig 3 compare2pdo.tiff",
        plot = gg_mae, width = 140, height = 160, units = "mm", dpi = 500)
