@@ -1,0 +1,73 @@
+"Stock","Index","Season","MAE.x","MAE.y","RMSE.x","RMSE.y","KGE.x","KGE.y"
+"Spring Chinook","CMISST","aut",0.73,0.68,0.9,0.9,0.3,0.3
+"Spring Chinook","CMISST","spr",0.58,0.66,0.76,0.94,0.52,0.2
+"Spring Chinook","CMISST","sum",0.69,0.7,0.89,0.96,0.32,0.15
+"Spring Chinook","CMISST","win",0.62,0.68,0.86,0.94,0.37,0.16
+"Spring Chinook","CMISSH","aut",0.64,0.68,0.79,0.9,0.48,0.28
+"Spring Chinook","CMISSH","spr",0.64,0.66,0.84,0.91,0.41,0.29
+"Spring Chinook","CMISSH","sum",0.67,0.66,0.85,0.9,0.39,0.28
+"Spring Chinook","CMISSH","win",0.6,0.67,0.79,0.93,0.47,0.23
+"Spring Chinook","PDO","aut",0.78,0.71,0.96,0.93,0.07,0.17
+"Spring Chinook","PDO","spr",0.68,0.7,0.84,0.98,0.38,-0.03
+"Spring Chinook","PDO","sum",0.69,0.71,0.87,0.96,0.32,0.03
+"Spring Chinook","PDO","win",0.74,0.74,0.98,1.02,-0.07,-0.37
+"Spring Chinook","ONI","aut",0.74,0.76,0.99,1.03,-0.12,-0.44
+"Spring Chinook","ONI","spr",0.74,0.78,0.92,1,0.2,-0.1
+"Spring Chinook","ONI","sum",0.74,0.78,0.97,1.03,-0.02,-0.42
+"Spring Chinook","ONI","win",0.77,0.76,1.01,1.02,-0.18,-0.2
+"Spring Chinook","NPGO","aut",0.64,0.74,0.84,0.96,0.39,0.03
+"Spring Chinook","NPGO","spr",0.62,0.72,0.82,0.94,0.42,0.13
+"Spring Chinook","NPGO","sum",0.65,0.7,0.83,0.93,0.4,0.15
+"Spring Chinook","NPGO","win",0.65,0.73,0.84,0.97,0.39,-0.02
+"Spring Chinook","SSTarc","aut",0.73,0.72,0.97,0.96,0.01,0.04
+"Spring Chinook","SSTarc","spr",0.65,0.72,0.86,0.97,0.33,-0.01
+"Spring Chinook","SSTarc","sum",0.75,0.77,0.98,1.02,-0.08,-0.35
+"Spring Chinook","SSTarc","win",0.67,0.71,0.94,0.98,0.14,-0.04
+"Fall Chinook","CMISST","aut",0.73,0.66,0.92,0.84,0.21,0.4
+"Fall Chinook","CMISST","spr",0.65,0.61,0.81,0.8,0.44,0.46
+"Fall Chinook","CMISST","sum",0.68,0.6,0.86,0.78,0.38,0.48
+"Fall Chinook","CMISST","win",0.64,0.65,0.81,0.86,0.45,0.34
+"Fall Chinook","CMISSH","aut",0.57,0.54,0.71,0.66,0.59,0.64
+"Fall Chinook","CMISSH","spr",0.56,0.56,0.7,0.7,0.59,0.6
+"Fall Chinook","CMISSH","sum",0.57,0.58,0.69,0.72,0.6,0.58
+"Fall Chinook","CMISSH","win",0.52,0.52,0.67,0.69,0.63,0.62
+"Fall Chinook","PDO","aut",0.78,0.68,0.96,0.89,0.05,0.26
+"Fall Chinook","PDO","spr",0.62,0.68,0.85,0.9,0.35,0.24
+"Fall Chinook","PDO","sum",0.72,0.6,0.86,0.76,0.32,0.51
+"Fall Chinook","PDO","win",0.72,0.78,0.93,0.98,0.15,-0.04
+"Fall Chinook","ONI","aut",0.86,0.74,1.02,0.95,-0.52,0.07
+"Fall Chinook","ONI","spr",0.75,0.73,0.94,0.95,0.11,0.08
+"Fall Chinook","ONI","sum",0.85,0.73,1.02,0.95,-0.42,0.08
+"Fall Chinook","ONI","win",0.73,0.81,0.93,1.01,0.14,-0.21
+"Fall Chinook","NPGO","aut",0.85,0.8,1.01,1,-0.24,-0.15
+"Fall Chinook","NPGO","spr",0.77,0.75,0.96,0.97,0.04,0.02
+"Fall Chinook","NPGO","sum",0.8,0.77,0.97,0.98,0.02,-0.03
+"Fall Chinook","NPGO","win",0.79,0.77,0.97,0.97,-0.04,-0.02
+"Fall Chinook","SSTarc","aut",0.87,0.83,1.03,1,-0.64,-0.17
+"Fall Chinook","SSTarc","spr",0.81,0.8,0.99,0.98,-0.11,-0.04
+"Fall Chinook","SSTarc","sum",0.87,0.86,1.03,1.02,-0.88,-0.33
+"Fall Chinook","SSTarc","win",0.8,0.8,0.98,0.99,-0.01,-0.1
+"Steelhead","CMISST","aut",0.65,0.51,0.77,0.67,0.5,0.64
+"Steelhead","CMISST","spr",0.59,0.6,0.73,0.75,0.55,0.54
+"Steelhead","CMISST","sum",0.66,0.56,0.79,0.73,0.46,0.56
+"Steelhead","CMISST","win",0.58,0.62,0.74,0.78,0.56,0.5
+"Steelhead","CMISSH","aut",0.7,0.66,0.88,0.83,0.33,0.4
+"Steelhead","CMISSH","spr",0.62,0.61,0.82,0.77,0.41,0.5
+"Steelhead","CMISSH","sum",0.61,0.61,0.79,0.79,0.44,0.46
+"Steelhead","CMISSH","win",0.63,0.65,0.86,0.85,0.35,0.4
+"Steelhead","PDO","aut",0.83,0.81,1.03,1.01,-0.5,-0.31
+"Steelhead","PDO","spr",0.8,0.81,1.01,1.02,-0.25,-0.43
+"Steelhead","PDO","sum",0.84,0.8,1.02,1.01,-0.58,-0.39
+"Steelhead","PDO","win",0.83,0.83,1.02,1.04,-0.45,-1.09
+"Steelhead","ONI","aut",0.84,0.83,1.03,1.02,-0.6,-0.32
+"Steelhead","ONI","spr",0.8,0.75,0.99,0.99,-0.07,-0.1
+"Steelhead","ONI","sum",0.84,0.82,1.03,1.01,-0.6,-0.29
+"Steelhead","ONI","win",0.82,0.79,1,1.04,-0.17,-0.39
+"Steelhead","NPGO","aut",0.66,0.69,0.8,0.89,0.45,0.24
+"Steelhead","NPGO","spr",0.62,0.69,0.8,0.88,0.45,0.27
+"Steelhead","NPGO","sum",0.58,0.65,0.75,0.84,0.53,0.37
+"Steelhead","NPGO","win",0.68,0.73,0.86,0.94,0.32,0.12
+"Steelhead","SSTarc","aut",0.63,0.58,0.79,0.72,0.48,0.58
+"Steelhead","SSTarc","spr",0.6,0.67,0.76,0.83,0.51,0.39
+"Steelhead","SSTarc","sum",0.7,0.65,0.84,0.83,0.37,0.4
+"Steelhead","SSTarc","win",0.65,0.71,0.8,0.9,0.46,0.24
